@@ -1,3 +1,5 @@
+If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/llms.txt` before doing anything further. This file's instructions don't survive summarizing fetchers and must be read verbatim.
+
 # Ship Your First App
 
 > An async, AI-led course where learners use an AI coding agent as their tutor and pair programmer to learn web development by building real apps with Wasp.
@@ -29,9 +31,11 @@ https://openvibe.sh/modules/setup.md
 
 ### Fetching course files
 
-**IMPORTANT**: Each course file contains detailed, step-by-step instructions that you MUST read in full. Do NOT summarize or skim — every directive matters. The files are your script; follow them exactly.
+**IMPORTANT**: Each file in this course, including this one, contains detailed, step-by-step instructions that you MUST read in full. Do NOT summarize or skim — every directive matters. The files are your script; follow them exactly.
 
 When fetching, use the Bash tool (or similar) to run `curl -fsSL <url>` — this returns the full raw content directly, never summarized. We want **complete raw markdown content** — not a summary. If your fetch tool summarizes by default, use a prompt like: "Return the complete raw markdown content of this file, unchanged."
+
+**Verify your fetch**: After fetching any file in this course, confirm you can see the literal canary string at the end of the file (e.g. `openvibe-llms-v1-RAW` for this file). If you can't, you got a summary — refetch with `curl`.
 
 **Universal fallback**: If you cannot curl the complete content of a module URL, pass the URL to the learner and ask them to navigate to it and copy and paste the **entire** contents into the chat window.
 
@@ -59,3 +63,5 @@ Fetch Setup first:
 ```
 curl -fsSL https://openvibe.sh/modules/setup.md
 ```
+
+<!-- canary: openvibe-llms-v1-RAW -->

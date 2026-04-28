@@ -68,6 +68,9 @@ If any check still fails after retrying, help the learner install the missing to
 
 ---
 
-## Step 3: Done — move to Module 0
+## Step 3: Fetch Module 0
 
-Setup is complete. Curl the Module 0 instructions and follow them verbatim.
+```sh
+curl -fsSL https://openvibe.sh/modules/module-0.md                   
+```   
+Read the entire file and follow its instructions.    
