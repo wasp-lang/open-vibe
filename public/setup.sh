@@ -6,8 +6,8 @@ set -euo pipefail
 
 # ─── Configuration ────────────────────────────────────────────────────────────
 
-REQUIRED_NODE_MAJOR=22
-REQUIRED_NODE_MINOR=12
+REQUIRED_NODE_MAJOR=24
+REQUIRED_NODE_MINOR=14
 REQUIRED_NODE_VERSION="${REQUIRED_NODE_MAJOR}.${REQUIRED_NODE_MINOR}"
 
 # Auto-accept prompts if stdin is not a TTY (piped from curl, run by an AI agent, etc.)
