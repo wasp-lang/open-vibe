@@ -48,24 +48,21 @@
 > - `ASK:` — YOU (the agent) ask the learner this question and wait for their response
 >   before continuing. Do not answer it for them.
 >
-> **Progress tracking & guide bubble**: The file `public/course-progress.json` controls
-> progress and the in-browser guide bubble. **IMPORTANT: All file paths are relative to
-> the learner's app directory** (the folder cloned from the starter repo in Beat 1).
-> After `cd` into the app folder, all file operations should happen inside that
-> directory. Do not `cd` out of it.
->
-> At the start of the module, check for `public/course-progress.json` —
-> if it exists and references this module, resume from the last completed beat.
->
-> Every `Write public/course-progress.json` directive gives you the **complete JSON
-> object** to write — copy it exactly. Never partially update; always write the full
-> object. After writing, print a progress bar like:
+> **Progress tracking**: At the start of the module, check for a `public/course-progress.json`
+> file in the project root. If it exists and references this module, resume from the
+> last completed beat instead of starting over. Progress is updated at the *start*
+> of each new beat (marking the previous beat as done) — each beat begins with a
+> `Write public/course-progress.json` directive.
+> After writing, print a progress bar like:
 >
 >     [■■□□] Beat 2 of 4 — What's Under the Hood
 >
-> The `guideStep` field controls a floating guide bubble in the browser. The bubble
-> has all steps hardcoded — just set `guideStep` to a number to show that step's
-> message. Set `guideStep` to `null` to hide the bubble.
+> Every progress write directive gives you the **complete JSON object** — copy it
+> exactly. Never partially update; always write the full object. The file format is:
+> ```json
+> { "module": number, "beat": number, "title": string, "status": "in-progress" | "complete", "guideStep": number | null }
+> ```
+> Set `"status": "complete"` after the final beat (Checkpoint & Reflect).
 >
 > **Fetching the next module**: When this module ends, fetch the next module's instructions from the course index using curl:
 >   https://openvibe.sh/llms.txt
