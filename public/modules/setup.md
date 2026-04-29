@@ -32,11 +32,6 @@ RUN:
 curl -fsSL https://openvibe.sh/setup.sh | bash
 ```
 
-This script auto-detects the OS and installs:
-- Node.js >= 22.12
-- npm
-- Wasp CLI
-
 If the script fails, read the error output and help the learner troubleshoot. Common issues:
 - **macOS without Homebrew**: The script will try to install Homebrew first. If that fails, tell the learner to install Homebrew manually: https://brew.sh
 - **Linux without nvm**: The script installs nvm automatically. If it fails, check internet connectivity.
@@ -44,32 +39,9 @@ If the script fails, read the error output and help the learner troubleshoot. Co
 
 ---
 
-## Step 2: Verify tools are installed
+## Step 2: Fetch Module 0
 
-RUN: `wasp version`
-- **Expected**: A version number like `0.21.x`
-- **If it fails**: Run `npm i -g @wasp.sh/wasp-cli@latest` and try again.
-
-RUN: `node --version`
-- **Expected**: `v22.x.x` or higher
-- **If it fails**: Re-run the setup script from Step 1.
-
-RUN: `git --version`
-- **Expected**: Any version (e.g., `git version 2.x.x`)
-- **If it fails**: Git is not installed. Help the learner install it:
-  - **macOS**: Run `xcode-select --install` (this installs Apple's Command Line Tools, which include git)
-  - **Linux (Debian/Ubuntu)**: Run `sudo apt install git`
-  - **Linux (Fedora/RHEL)**: Run `sudo dnf install git`
-  - **WSL**: Run `sudo apt install git`
-
-SAY: "Everything looks good — your tools are installed!"
-
-If any check still fails after retrying, help the learner install the missing tool manually before continuing.
-
----
-
-## Step 3: Fetch Module 0
-
+RUN:
 ```sh
 curl -fsSL https://openvibe.sh/modules/module-0.md                   
 ```   
