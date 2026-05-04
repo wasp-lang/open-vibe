@@ -13,7 +13,13 @@ const base = import.meta.env.BASE_URL;
 
 const INSTALL_PROMPT = `I'm starting the "Ship Your First App" course. Run \`curl -fsSL https://openvibe.sh/llms.txt\` and follow the file's instructions.`;
 
-const navLinks = ["See it in action", "How it works", "Curriculum", "FAQ"];
+const navLinks = [
+  { label: "See it in action", href: "#see-it-in-action" },
+  { label: "How it works",     href: "#how-it-works" },
+  { label: "Build a SaaS",     href: "#for-founders" },
+  { label: "Curriculum",       href: "#curriculum" },
+  { label: "FAQ",              href: "#faq" },
+];
 
 const whyRows = [
   { feature: "Your tutor",          tutorials: "A recorded video",                    openvibe: "A live AI agent in your editor" },
@@ -105,7 +111,7 @@ const courseJsonLd = {
         <ul class="ov-nav-links" style="display:flex;gap:22px;list-style:none;margin:0;padding:0">
           {navLinks.map(l => (
             <li>
-              <a href={`#${l.toLowerCase().replace(/\s+/g, "-")}`} style="font-size:14px;color:#0a0a0a;text-decoration:none;font-weight:500">{l}</a>
+              <a href={l.href} style="font-size:14px;color:#0a0a0a;text-decoration:none;font-weight:500">{l.label}</a>
             </li>
           ))}
         </ul>
@@ -124,7 +130,7 @@ const courseJsonLd = {
       <ul style="list-style:none;margin:0;padding:8px 20px 16px;display:flex;flex-direction:column">
         {navLinks.map(l => (
           <li>
-            <a href={`#${l.toLowerCase().replace(/\s+/g, "-")}`} style="display:block;padding:14px 4px;font-size:16px;color:#0a0a0a;text-decoration:none;font-weight:500;border-bottom:1px solid #f5e6c8">{l}</a>
+            <a href={l.href} style="display:block;padding:14px 4px;font-size:16px;color:#0a0a0a;text-decoration:none;font-weight:500;border-bottom:1px solid #f5e6c8">{l.label}</a>
           </li>
         ))}
         <li>
