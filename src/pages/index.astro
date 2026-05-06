@@ -97,7 +97,47 @@ const courseJsonLd = {
 <script type="application/ld+json" set:html={JSON.stringify(courseJsonLd)} />
 
 <!-- ============================================================
-     NavBar
+     Product Hunt Launch Banner (scrolls away above sticky nav)
+============================================================ -->
+<div id="ph-banner" style="background:linear-gradient(90deg,#ff6154 0%,#e8472e 100%);color:#fff;text-align:center;padding:10px 20px;font-family:var(--os-font-mono);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
+  <span style="display:flex;align-items:center;gap:8px">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 58.48 58.48" style="flex-shrink:0">
+      <path d="M58.48 29.24c0 16.148-13.092 29.24-29.24 29.24C13.09 58.48 0 45.388 0 29.24 0 13.09 13.091 0 29.24 0c16.148 0 29.24 13.091 29.24 29.24" fill="#0000002E"/>
+
+      <path d="M33.138 29.24h-8.284v-8.772h8.284a4.386 4.386 0 1 1 0 8.772m0-14.62H19.006v29.24h5.848v-8.772h8.284c5.652 0 10.234-4.582 10.234-10.234S38.79 14.62 33.138 14.62" fill="#FFF"/>
+    </svg>
+    We're launching on Product Hunt on May 12!
+  </span>
+  <span id="ph-countdown" style="background:rgba(0,0,0,.18);border-radius:6px;padding:4px 12px;letter-spacing:.5px;font-size:13px">calculating…</span>
+  <a href="https://www.producthunt.com/products/open-vibe?launch=open-vibe" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:9999px;background:#fff;color:#ff6154;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap">
+    Support us ↗
+  </a>
+</div>
+<script>
+  (function () {
+    const LAUNCH = new Date('2026-05-12T07:01:00Z').getTime(); // 12:01 AM PDT = 07:01 UTC
+    const el = document.getElementById('ph-countdown');
+    if (!el) return;
+    const target = el;
+    function tick() {
+      const diff = LAUNCH - Date.now();
+      if (diff <= 0) {
+        target.textContent = '🚀 We\'re live!';
+        return;
+      }
+      const d = Math.floor(diff / 864e5);
+      const h = Math.floor((diff % 864e5) / 36e5);
+      const m = Math.floor((diff % 36e5) / 6e4);
+      const s = Math.floor((diff % 6e4) / 1e3);
+      target.textContent = `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
+
+<!-- ============================================================
+     NavBar (sticks to top on scroll)
 ============================================================ -->
 <header style="position:sticky;top:0;z-index:50">
   <div style="background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid #e5e5e5">
