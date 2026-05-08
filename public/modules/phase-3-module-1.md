@@ -98,7 +98,7 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 - Learner has completed setup (`/modules/setup.md`) — same setup script as Phase 1.
 - **Docker is required for Phase 3** (Open SaaS uses Postgres via Docker). The setup script lists Docker as optional; for Phase 3 it is mandatory. If Docker is not installed and running, pause and install it before continuing.
 - Learner is in an empty working directory where they want their SaaS project to live.
-- VERIFY: Run `wasp version` (must output a version), `node --version` (must be v22+), and `docker --version` (must be installed). Then run `docker info` to confirm the Docker daemon is actually running. If `docker info` fails with "Cannot connect to the Docker daemon," tell the learner to start Docker Desktop and try again.
+- VERIFY: Run `wasp version` (must output a version), `node --version` (must be v22+), and `docker --version` (must be installed). Then run `docker info` to confirm the Docker daemon is actually running. If `docker info` fails with "Cannot connect to the Docker daemon," the daemon isn't running — tell the learner to start it. On macOS/Windows that usually means opening Docker Desktop (or Colima/OrbStack/Rancher Desktop if they prefer those). On Linux the daemon should already be running as a systemd service; if not, they may need `sudo systemctl start docker`.
 
 ## Learning Objectives
 By the end of this module, the learner will:
@@ -127,9 +127,9 @@ Print progress bar: `[■□□□] Beat 1 of 4 — Get It Running`
 
 SAY: "Welcome to Phase 3. We're going to build a SaaS — Software-as-a-Service. By the end of this phase you'll have a real product on your machine: users can sign up, pay you money, and use features that are gated behind a subscription. We're starting from a battle-tested template called Open SaaS, and the first thing we're going to do is just *run it* and look at it. No code today. Today is reconnaissance."
 
-SAY: "Heads up: this setup needs **two terminal windows running at once** — one for the database, one for the app. And it needs **Docker** running in the background (we use it to run a real Postgres database locally). If Docker Desktop isn't open right now, please open it before we continue."
+SAY: "Heads up: this setup needs **two terminal windows running at once** — one for the database, one for the app. And it needs **Docker** running in the background (we use it to run a real Postgres database locally). The Docker *daemon* needs to be alive — on macOS/Windows that usually means opening Docker Desktop (or an alternative like Colima or OrbStack); on Linux it should already be running as a service."
 
-LEARNER: 👉 Open Docker Desktop (or start the Docker daemon on Linux) and confirm it's running.
+LEARNER: 👉 Make sure Docker is running. If you're on macOS/Windows, open Docker Desktop (or whichever Docker daemon you use). If you're on Linux, the daemon is probably already running.
 
 Verify Docker is up before scaffolding:
 RUN: `docker info`
@@ -147,8 +147,9 @@ After scaffolding, the project structure looks like this:
 
 ```
 my-saas/
-├── app/        ← the Wasp app (where you'll spend most of your time)
-└── blog/       ← a Starlight blog/docs site (separate Astro project)
+├── app/         ← the Wasp app (where you'll spend most of your time)
+├── blog/        ← a Starlight blog/docs site (separate Astro project)
+└── e2e-tests/   ← end-to-end tests using Playwright
 ```
 
 The `app/` directory is your real working directory. Almost every command from here on runs from inside `app/`.
@@ -163,35 +164,28 @@ RUN: `cp .env.server.example .env.server`
 
 (Note: Open SaaS does not require a separate `.env.client` for the bare-minimum boot. If you discover one is needed for a specific feature later, we'll handle it in the relevant module.)
 
-Now start the database. **This stays running for the rest of the module — leave this terminal open.**
+Now we need **two long-running terminals** owned by the learner — one for the database, one for the app. The agent's terminal can keep being used for short commands, but the two below need to stay open and dedicated.
 
-LEARNER: 👉 In this terminal, run:
+LEARNER: 👉 **Terminal A — database**: open a new terminal, `cd` into `my-saas/app`, then run:
 ```
 wasp start db
 ```
 
-Wait until you see output indicating Postgres is ready and listening (typically on port 5432). Leave this terminal alone — do not close it, do not Ctrl-C it.
+Wait until you see output indicating Postgres is ready and listening (typically on port 5432). Leave Terminal A alone for the rest of the module — do not close it, do not Ctrl-C it.
 
-LEARNER: 👉 **Open a second terminal window/tab** and `cd` into the same `app/` directory:
-```
-cd my-saas/app
-```
-
-Now create the initial database schema. We use `--name init` so the migration name is passed directly — interactive prompts for migration names hang in most AI coding agents.
-
-LEARNER: 👉 In the second terminal, run:
+LEARNER: 👉 **Terminal B — app**: open a *second* terminal, `cd` into the same `my-saas/app` directory, then run:
 ```
 wasp db migrate-dev --name init
 ```
 
-This may take a minute the first time (it installs all dependencies). Wait for it to complete with a "migration applied" message.
+This creates the initial database schema. We use `--name init` so the migration name is passed directly — interactive prompts for migration names hang in most AI coding agents. This may take a minute the first time (it installs all dependencies). Wait for it to complete with a "migration applied" message.
 
-LEARNER: 👉 In the second terminal, run:
+LEARNER: 👉 In Terminal B, run:
 ```
 wasp start
 ```
 
-Once the app is up at `http://localhost:3000`, suggest they arrange their browser and the second terminal side by side so they can see both. The first terminal (running `wasp start db`) can stay minimized — just don't close it.
+Once the app is up at `http://localhost:3000`, suggest they arrange their browser and Terminal B side by side so they can see both. Terminal A (running `wasp start db`) can stay minimized — just don't close it.
 
 ASK: "❓ Take a quick look at the page that just loaded. Without clicking anything yet — what does this look like to you compared to the todo app from Phase 1 (or any toy app you've seen)?"
 
@@ -228,29 +222,33 @@ LEARNER: 👉 Start at `http://localhost:3000` (the landing page).
 
 After they're there, name the parts: **hero section, feature list, pricing section, testimonials, footer.** Tell them: "This is a *marketing site*. Its job is to convince a stranger to sign up."
 
-LEARNER: 👉 Click the **Sign Up** button (or "Get Started", whatever the CTA says).
+LEARNER: 👉 Click the **Login/Sign Up** button.
 
 Note: "This is a *signup form*. The user types email and password, and an account gets created — somewhere. We'll talk about *where* in Beat 3."
 
 LEARNER: 👉 Sign up with a test email like `test@example.com` and any password.
 
-After they sign up and land on the app dashboard, tell them: "And *this* is what users see after they log in — the actual product. The marketing site sold them on it; this is what they paid for."
+They will need to find the verification link in the terminal. Explain to them: "In development, the template uses Wasp's **Dummy email sender** — instead of really emailing you, it prints the verification link to the server logs. Look in the terminal where you ran `wasp start` and find the block that starts with `Dummy email sender ✉️`. That block contains a verification URL — copy that URL into your browser. We'll wire up a real email service later for production."
 
-LEARNER: 👉 Click around the dashboard. Try the demo AI feature if there is one. Click **Pricing** in the nav.
+LEARNER: 👉 Find the `Dummy email sender ✉️` block in the `wasp start` terminal, copy the verification link, and open it in your browser.
 
-On the pricing page, point out: "These are subscription tiers. Click 'Buy' on one — don't worry, we're in test mode, no real money will move."
+After they sign up and land on the app dashboard, tell them: "And *this* is what users see after they log in — the actual product. The marketing site sold them on it; this is what they signed up for."
+
+LEARNER: 👉 Click around the dashboard. Visit the AI demo page if there is one — but **don't click Generate yet**. It would error out without an OpenAI API key, and we'll wire that up properly in Module 2. For now, just observe that the page is there. Then click **Pricing** in the nav.
+
+On the pricing page, point out: "These are subscription tiers. Open SaaS supports three payment providers out of the box — **Stripe**, **Lemon Squeezy**, and **Polar** — and you pick one when you set up your app. Click 'Buy' on a tier so we can talk about what *would* happen."
 
 LEARNER: 👉 Click **Buy/Subscribe** on a paid tier.
 
-This will redirect them to a Stripe checkout page (in test mode). Tell them: "Notice — we just left your app entirely. That page is hosted by *Stripe*, not by you. Cancel out of it for now."
+Tell them: "The button is wired up in the UI, but nothing will happen yet — and that's expected. We haven't plugged in real API keys for any of the three payment providers (Stripe, Lemon Squeezy, or Polar), so the checkout URL doesn't redirect anywhere. In a real SaaS, this button would take the user to a checkout page hosted by your chosen provider — not by your app. We'll wire up real payment keys in a later module."
 
-LEARNER: 👉 Cancel out of Stripe and return to the app. Click **Blog** in the nav.
+LEARNER: 👉 Click **Blog** in the nav.
 
 Note: "Most SaaS products have a blog. It's how customers find you in Google."
 
 ASK: "❓ You just walked through five distinct *kinds of pages*: marketing site, signup form, app dashboard, pricing/checkout, and blog. Which one surprised you the most was already built in?"
 
-Listen and affirm. Most learners are surprised by the marketing site or the pricing/Stripe flow.
+Listen and affirm. Most learners are surprised by the marketing site or the pricing/checkout flow.
 
 — — —
 
@@ -282,24 +280,46 @@ Now make this concrete. Walk through the user journey from Beat 2 a second time,
 Print this map for them:
 
 ```
-What the user did              →   Who handled it
-─────────────────────────────────────────────────────────
-Visited the landing page        →   Your app (Wasp + React)
-Signed up                       →   Wasp Auth (built-in) + your database
-Logged in                       →   Wasp Auth + your database
-Saw their dashboard             →   Your app + your database
-Clicked "Buy" on Pricing        →   Stripe (or Lemon Squeezy)
-Got a receipt email             →   Sendgrid / Mailgun / SMTP
-Used the AI demo feature        →   OpenAI (or another AI provider)
-Uploaded a file (if they did)   →   AWS S3
+What the user did               →   Who handled it
+──────────────────────────────────────────────────────────────────
+Visited the landing page         →   Your app (Wasp + React)
+Signed up                        →   Wasp Auth (email/Google/GitHub/Discord) + your database
+Verified their email             →   Email sender (Dummy in dev → SendGrid in prod, per Open SaaS default)
+Logged in                        →   Wasp Auth + your database
+Saw their dashboard              →   Your app + your database
+Clicked "Buy" on Pricing          →   Stripe / Lemon Squeezy / Polar
+Used the AI demo feature         →   OpenAI (or another AI provider)
+Uploaded a file (if they did)    →   AWS S3
+Daily stats in /admin            →   Plausible or Google Analytics
 ```
 
 SAY: "Every row in that table is a different company that you have an account with. Every row has API keys. Every row has its own dashboard you'll log into someday. *That* is what makes building a modern SaaS different from building the todo app — you're not writing all of this from scratch. You're writing the glue."
+
+To make this even more concrete, show them the actual feature folders inside the project — the codebase itself is organized around these integrations:
+
+```
+app/src/
+├── admin/          ← admin dashboard
+├── analytics/      ← Plausible / Google Analytics integration
+├── auth/           ← signup, login, password reset
+├── client/         ← shared React code, landing page
+├── demo-ai-app/    ← OpenAI integration
+├── file-upload/    ← AWS S3 integration
+├── landing-page/
+├── messages/
+├── payment/        ← Stripe / Lemon Squeezy / Polar integration + webhooks
+├── server/
+├── shared/
+└── user/
+```
+
+SAY: "See how the folders are named after *what they do*, not *what kind of code they are*? Most of these folders exist because of an external service we just talked about. That's the glue, right there in the file tree."
 
 Now make the glue tangible. Print this snippet to show them what an `.env.server` file looks like (do NOT have them open the file — just print a sanitized example):
 
 ```env
 DATABASE_URL=postgresql://...
+# Payments — fill in keys for whichever provider you chose (Stripe, Lemon Squeezy, or Polar)
 STRIPE_API_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 SENDGRID_API_KEY=SG....
@@ -311,7 +331,25 @@ GOOGLE_CLIENT_ID=...
 
 SAY: "This file is the *list of services your app is plugged into*. Every line is a key that lets your app talk to one external service. When you hear someone say 'modern dev is just gluing APIs together' — *this* is what they mean."
 
-Now show them the admin side. Tell them you (or they) can navigate to `/admin` (the app may require an admin role — if so, just point at the URL and describe what's there rather than trying to grant the role mid-tour). Describe what lives there: user list, subscription status, analytics. Tell them: "This is the *back of the house*. You as the operator look at this. Customers don't see it."
+There's one more file worth naming, even though we won't open it today: `main.wasp` (in the `app/` directory). Tell the learner: "That file is the *control panel* of your SaaS — it's where you declare your auth methods, your routes, your database models, your background jobs, and your webhook endpoints. Wasp reads it and wires everything up. We'll start touching it in Module 2 — for now, just know it exists and that it's the master config."
+
+Now show them the admin side. The admin dashboard at `/admin` is gated by an `isAdmin` boolean on the user — by default, the account they just signed up with isn't an admin yet, so visiting `/admin` will bounce them. We'll flip that flag now so they can see what's behind the gate.
+
+SAY: "Open SaaS keeps the admin area locked behind an `isAdmin` flag on your user record. There are two ways to flip it: set `ADMIN_EMAILS` in `.env.server` *before* you sign up (any email in that list becomes admin on first login), or — since you've already signed up — open Wasp's database GUI and toggle the field by hand. We'll do the second one."
+
+LEARNER: 👉 Open a **new terminal** (leave `wasp start db` and `wasp start` running in the others), `cd` into the `app/` directory, and run:
+
+```sh
+wasp db studio
+```
+
+This launches Prisma Studio in the browser — a spreadsheet-like view of your database tables.
+
+LEARNER: 👉 In Prisma Studio, click the **User** model in the left sidebar, find the row for the email you signed up with, change `isAdmin` from `false` to `true`, and click **Save 1 change** at the top.
+
+LEARNER: 👉 Back in the app at `http://localhost:3000`, refresh the page (or log out and back in) and navigate to `http://localhost:3000/admin`.
+
+Now they should see the admin dashboard. Describe what lives there: user list, subscription status, daily/weekly analytics. Tell them: "This is the *back of the house*. You as the operator look at this. Customers don't see it. The fact that you just changed a single boolean in the database to unlock this whole area is a hint at how role-based access usually works in a SaaS — there's no separate admin app, it's the same app rendering different things based on who's logged in."
 
 ASK: "❓ Pick any one thing the user did in Beat 2 — signing up, paying, using the AI feature, anything. Tell me which external service handled it, and what would break if that service disappeared."
 
@@ -359,6 +397,8 @@ Affirm correct parts. Gently fill in anything missing. Then summarize:
 
 Preview: "In Module 2, we'll dig into the heart of any SaaS: the loop where a user signs up, pays you, and unlocks features they couldn't see before. That single loop — auth → payment → access — is what makes something a *SaaS* and not just an app. We'll trace it end-to-end."
 
+Optional aside (offer it, don't force it): "If you want to see what a *finished, polished* version of this template looks like in production, the team that made Open SaaS built their own marketing site on it. Visit https://opensaas.sh — log in, click around the demo, look at the pricing page. Same template you have running locally; theirs just has all the keys filled in and a real product wrapped around it."
+
 SAY: "Before we move on, I'd love to hear how this went for you! Take a quick second to share your feedback — it really helps us improve the course: https://forms.gle/3U5wKpc3ZeEWJvaq7"
 
 Write `app/public/course-progress.json`:
@@ -381,7 +421,7 @@ Expected state after this module:
 - `app/.env.server` populated from `.env.server.example` (dummy values, sufficient to boot)
 - Postgres running via `wasp start db` in one terminal
 - Initial Prisma migration applied; app running via `wasp start` in a second terminal at `http://localhost:3000`
-- Learner has signed up, clicked through pricing → Stripe test checkout, and returned
+- Learner has signed up, clicked through pricing, and seen that the checkout button is wired in the UI but doesn't redirect (no payment provider keys yet)
 - No code edits made by the learner
 
 <!-- canary: openvibe-phase-3-module-1-v1-RAW -->

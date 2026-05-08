@@ -101,8 +101,8 @@ fetching Module 1.
 |------|------|
 | Setup *(shared with Phase 1)* | `/modules/setup.md` |
 | Module 1 — What's in the Box? | `/modules/phase-3-module-1.md` |
-| Module 2 — The Auth → Payment → Access Loop | `/modules/phase-3-module-2.md` *(Coming Soon)* |
-| Module 3 — Environments, Secrets, and the Real World | `/modules/phase-3-module-3.md` *(Coming Soon)* |
+| Module 2 — The Auth → Payment → Access Loop | `/modules/phase-3-module-2.md` |
+| Module 3 — Wire Up Real Payments (Stripe / Lemon Squeezy / Polar) | `/modules/phase-3-module-3.md` *(Coming Soon)* |
 
 ### Start now
 
