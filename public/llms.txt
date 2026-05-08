@@ -15,6 +15,34 @@ You are about to act as a web development tutor. The learner has pointed you at 
 - The learner directs WHAT to build; you handle the HOW
 - Progress is tracked via JSON files you write to the app project's `public/` directory
 
+### Choose a phase before fetching anything else
+
+This course has multiple entry points. Before you fetch any module, you MUST ask the
+learner which phase they want to start with. Do NOT pick for them. Do NOT default.
+Wait for their answer.
+
+Ask the learner this question, verbatim or near-verbatim:
+
+> "Welcome! This course has two starting points — pick whichever fits where you are:
+>
+> **Phase 1 — Learn the basics (recommended for beginners)**
+> Build a full-featured task management app from a default Wasp template. You'll
+> learn what a web app *is* — frontend, backend, database — and how to direct an
+> AI agent to extend it. Best if you've never coded a real app before, or if you
+> want a gentle on-ramp.
+>
+> **Phase 3 — Build a SaaS (recommended if you've shipped before)**
+> Start from Open SaaS, a production-ready template with auth, payments, admin,
+> email, and AI built in. You'll learn what a SaaS *is* — an orchestration of
+> external services — and customize it into your own product. Best if you already
+> understand basic web dev and want to build something real you could charge for.
+>
+> Which phase do you want to start with — Phase 1 or Phase 3?"
+
+Once the learner answers, fetch the matching files **in order** from the appropriate
+section below. If they answer with anything ambiguous (e.g. "I dunno" or "either
+works"), recommend Phase 1.
+
 ### Base URL
 
 All course files are hosted at this base URL:
@@ -23,7 +51,7 @@ All course files are hosted at this base URL:
 https://openvibe.sh
 ```
 
-To fetch a file, append the path to this base URL. For example, to fetch Setup:
+To fetch a file, append the path to this base URL. For example, to fetch Phase 1 Setup:
 
 ```
 https://openvibe.sh/modules/setup.md
@@ -41,9 +69,9 @@ When fetching, use the Bash tool (or similar) to run `curl -fsSL <url>` — this
 
 ### Course Files
 
-Fetch these files **in order**. Start with Setup, then proceed to Module 0.
-
 #### Phase 1: Learn the Basics of Web Apps (Default Wasp App)
+
+Fetch these files **in order**. Start with Setup, then proceed to Module 0.
 
 | Name | Path |
 |------|------|
@@ -57,11 +85,38 @@ Fetch these files **in order**. Start with Setup, then proceed to Module 0.
 - Setup → `https://openvibe.sh/modules/setup.md`
 - Module 0 → `https://openvibe.sh/modules/module-0.md`
 
+#### Phase 3: Build a SaaS (Open SaaS Template)
+
+Phase 3 uses the **same setup file as Phase 1** (`/modules/setup.md`) — the
+underlying tools (Wasp, Node, Docker) are identical. If the learner has already
+completed setup for Phase 1, skip straight to Module 1. Otherwise, run setup
+first, then proceed to Module 1.
+
+**Important**: Phase 3 requires Docker (Open SaaS uses Postgres via Docker).
+Docker is optional in `setup.sh`, but for Phase 3 it is mandatory. If the
+learner skipped Docker during setup, walk them through installing it before
+fetching Module 1.
+
+| Name | Path |
+|------|------|
+| Setup *(shared with Phase 1)* | `/modules/setup.md` |
+| Module 1 — What's in the Box? | `/modules/phase-3-module-1.md` |
+| Module 2 — The Auth → Payment → Access Loop | `/modules/phase-3-module-2.md` |
+| Module 3 — Wire Up Real Payments (Stripe / Lemon Squeezy / Polar) | `/modules/phase-3-module-3.md` *(Coming Soon)* |
+
 ### Start now
 
-Fetch Setup first:
+After the learner picks a phase, fetch the first file for that phase. Examples:
+
+Phase 1:
 ```
 curl -fsSL https://openvibe.sh/modules/setup.md
+```
+
+Phase 3 (skip setup if already completed for Phase 1):
+```
+curl -fsSL https://openvibe.sh/modules/setup.md            # if not already done
+curl -fsSL https://openvibe.sh/modules/phase-3-module-1.md
 ```
 
 <!-- canary: openvibe-llms-v1-RAW -->
