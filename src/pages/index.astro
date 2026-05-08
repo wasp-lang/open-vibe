@@ -58,6 +58,13 @@ const phase1Modules = [
   { n: "Module 3", title: "How It All Connects",   status: "soon" },
 ];
 
+const phase3Modules = [
+  { n: "Module 1", title: "What's in the Box?",                        status: "available" },
+  { n: "Module 2", title: "The Auth → Payment → Access Loop",          status: "available" },
+  { n: "Module 3", title: "Wire Up Real Payments",                     status: "soon" },
+  { n: "Modules 4 & Beyond", title: "TBD...",                     status: "soon" },
+];
+
 const faqs = [
   { q: "Is it really free?",                       a: "Yes. Open Vibe is 100% free and open source. The curriculum, the skills, the diagrams — all of it, under MIT. Fork it, remix it, run your own class with it." },
   { q: "Do I need to know how to code?",           a: "No. Open Vibe can be used by beginners or pros. You set the pace and focus your efforts as you see fit. If you can type, follow instructions, and stay curious, you can do this." },
@@ -618,21 +625,41 @@ const courseJsonLd = {
     </div>
   </div>
 
-  <!-- Phase 2 & 3 (soon) -->
-  <div style="margin-top:14px;display:flex;flex-direction:column;gap:14px">
-    {[
-      { phase: "Phase 2", title: "Build your own app from scratch", teaser: "Spec your own idea, scaffold a new project, and ship it end-to-end — with the agent pairing the whole way." },
-      { phase: "Phase 3", title: "Build a SaaS business",           teaser: "Turn an app into a real SaaS business: billing, subscriptions, admin dashboard, file uploads, AI integrations, analytics, deploy, and a landing page that converts." },
-    ].map(p => (
-      <div style="background:#fff;border-radius:16px;border:1px solid #e5e5e5;overflow:hidden">
-        <div style="display:flex;align-items:center;gap:16px;padding:18px 24px;background:#fafafa;border-bottom:1px solid #e5e5e5">
-          <div style="font-family:var(--os-font-mono);font-size:11px;font-weight:700;color:#737373;letter-spacing:1.5px;flex-shrink:0">{p.phase.toUpperCase()}</div>
-          <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#737373;letter-spacing:-0.01em">{p.title}</div>
-          <span style="padding:5px 12px;border-radius:6px;color:#737373;font-family:var(--os-font-mono);font-size:11.5px;font-weight:700;letter-spacing:1px">COMING SOON</span>
-        </div>
-        <div style="padding:14px 24px 18px;font-size:13.5px;color:#737373;line-height:1.55">{p.teaser}</div>
+  <!-- Phase 2 (soon) -->
+  <div style="margin-top:14px">
+    <div style="background:#fff;border-radius:16px;border:1px solid #e5e5e5;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:16px;padding:18px 24px;background:#fafafa;border-bottom:1px solid #e5e5e5">
+        <div style="font-family:var(--os-font-mono);font-size:11px;font-weight:700;color:#737373;letter-spacing:1.5px;flex-shrink:0">PHASE 2</div>
+        <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#737373;letter-spacing:-0.01em">Build your own app from scratch</div>
+        <span style="padding:5px 12px;border-radius:6px;color:#737373;font-family:var(--os-font-mono);font-size:11.5px;font-weight:700;letter-spacing:1px">COMING SOON</span>
       </div>
-    ))}
+      <div style="padding:14px 24px 18px;font-size:13.5px;color:#737373;line-height:1.55">Spec your own idea, scaffold a new project, and ship it end-to-end — with the agent pairing the whole way.</div>
+    </div>
+  </div>
+
+  <!-- Phase 3 (active) -->
+  <div style="margin-top:14px;background:#fff;border-radius:16px;border:1px solid #f5e6c8;overflow:hidden;box-shadow:var(--os-shadow-card)">
+    <div style="display:flex;align-items:center;gap:16px;padding:18px 24px;background:#faf1e3;border-bottom:1px solid #f5e6c8">
+      <div style="font-family:var(--os-font-mono);font-size:11px;font-weight:700;color:#bc7508;letter-spacing:1.5px;padding:4px 10px;border-radius:6px;background:#fff;border:1px solid #f5e6c8;flex-shrink:0">PHASE 3</div>
+      <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#0a0a0a;letter-spacing:-0.01em">Build a SaaS with Open SaaS</div>
+      <span style="padding:5px 12px;border-radius:6px;background:#ffdc5c;color:#b45309;font-family:var(--os-font-mono);font-size:11.5px;font-weight:700;letter-spacing:1px">AVAILABLE</span>
+    </div>
+    <div style="padding:14px 24px 4px;font-size:13.5px;color:#737373;line-height:1.55">Start from <a href="https://opensaas.sh" target="_blank" style="color:#0a0a0a;text-decoration:underline">Open SaaS</a> — a production-ready template with auth, payments, admin, email, and AI built in. Learn what a SaaS actually <em>is</em>, then customize it into your own product. <strong style="color:#0a0a0a">No prior course progress required</strong> — Phase 3 has its own on-ramp.</div>
+    <div style="display:flex;flex-direction:column;margin-top:10px">
+      {phase3Modules.map((m, i) => (
+        <div class="curriculum-row" style={`display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:16px 24px;${i > 0 ? "border-top:1px solid #e5e5e5" : "border-top:1px solid #e5e5e5"}`}>
+          <div style="font-size:15px;color:#0a0a0a">
+            <span style="font-family:var(--os-font-mono);font-weight:700">{m.n}</span>
+            <span style="color:#737373;margin:0 8px">—</span>
+            <span>{m.title}</span>
+          </div>
+          {m.status === "available"
+            ? <span style="padding:5px 12px;border-radius:6px;background:#ffdc5c;color:#b45309;font-family:var(--os-font-mono);font-size:11.5px;font-weight:700;letter-spacing:1px">AVAILABLE</span>
+            : <span style="padding:5px 12px;border-radius:6px;background:#faf1e3;color:#737373;font-family:var(--os-font-mono);font-size:11.5px;font-weight:700;letter-spacing:1px">COMING SOON</span>
+          }
+        </div>
+      ))}
+    </div>
   </div>
 </section>
 
