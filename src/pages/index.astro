@@ -707,11 +707,11 @@ const courseJsonLd = {
   <div style="background:#fff;border-radius:16px;border:1px solid #f5e6c8;overflow:hidden;box-shadow:var(--os-shadow-card)">
     <div style="display:flex;align-items:center;gap:16px;padding:18px 24px;background:#faf1e3;border-bottom:1px solid #f5e6c8">
       <div style="font-family:var(--os-font-mono);font-size:11px;font-weight:700;color:#bc7508;letter-spacing:1.5px;padding:4px 10px;border-radius:6px;background:#fff;border:1px solid #f5e6c8;flex-shrink:0">PHASE 1</div>
-      <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#0a0a0a;letter-spacing:-0.01em">Learn the basics of web apps <span style="font-weight:400;font-style:italic;color:#a3a3a3;font-size:13px;letter-spacing:0;margin-left:6px">Start here if you're a newbie</span></div>
+      <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#0a0a0a;letter-spacing:-0.01em">Learn the basics of web apps</div>
       <span style="padding:5px 12px;border-radius:6px;background:#ffdc5c;color:#b45309;font-family:var(--os-font-mono);font-size:11.5px;font-weight:700;letter-spacing:1px">AVAILABLE</span>
     </div>
-    <div style="padding:14px 24px 4px;font-size:13.5px;color:#737373;line-height:1.55"><strong style="color:#0a0a0a">Start here if you're a complete newbie.</strong> Build a working app from scratch while your agent explains how the web works.</div>
-    <div style="display:flex;flex-direction:column;margin-top:10px">
+    <div style="padding:14px 24px 14px;font-size:13.5px;color:#737373;line-height:1.55">Build and deploy a full-stack app from scratch while your agent explains how the web and apps work.<span style="font-weight:400;font-style:italic;color:#a3a3a3;font-size:13px;letter-spacing:0;margin-left:6px">Start here if you're a newbie</span></div>
+    <div style="display:flex;flex-direction:column;border-top:1px solid #e5e5e5">
       {phase1Modules.map((m, i) => (
         <div class="curriculum-row" style={`display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:16px 24px;${i > 0 ? "border-top:1px solid #e5e5e5" : ""}`}>
           <div style="font-size:15px;color:#0a0a0a">
@@ -732,10 +732,10 @@ const courseJsonLd = {
   <div style="margin-top:14px;background:#fff;border-radius:16px;border:1px solid #f5e6c8;overflow:hidden;box-shadow:var(--os-shadow-card)">
     <div style="display:flex;align-items:center;gap:16px;padding:18px 24px;background:#faf1e3;border-bottom:1px solid #f5e6c8">
       <div style="font-family:var(--os-font-mono);font-size:11px;font-weight:700;color:#bc7508;letter-spacing:1.5px;padding:4px 10px;border-radius:6px;background:#fff;border:1px solid #f5e6c8;flex-shrink:0">PHASE 2</div>
-      <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#0a0a0a;letter-spacing:-0.01em">Build a SaaS with Open SaaS <span style="font-weight:400;font-style:italic;color:#a3a3a3;font-size:13px;letter-spacing:0;margin-left:6px">Start here if you vibe with the basics</span></div>
+      <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#0a0a0a;letter-spacing:-0.01em">Build a SaaS with Open SaaS </div>
       <span style="padding:5px 12px;border-radius:6px;background:#ffdc5c;color:#b45309;font-family:var(--os-font-mono);font-size:11.5px;font-weight:700;letter-spacing:1px">AVAILABLE</span>
     </div>
-    <div style="padding:14px 24px 4px;font-size:13.5px;color:#737373;line-height:1.55"><strong style="color:#0a0a0a">Start here if you're comfortable with the basics.</strong> Skip ahead and start from <a href="https://opensaas.sh" target="_blank" style="color:#0a0a0a;text-decoration:underline">Open SaaS</a> — a production-ready template with auth, payments, admin, email, and AI built in — then customize it into your own product.</div>
+    <div style="padding:14px 24px 4px;font-size:13.5px;color:#737373;line-height:1.55">Build your SaaS idea on top of <a href="https://opensaas.sh" target="_blank" style="color:#0a0a0a;text-decoration:underline">Open SaaS</a> — a production-ready template with auth, payments, admin, email, and AI built in — while learning the essentials.<span style="font-weight:400;font-style:italic;color:#a3a3a3;font-size:13px;letter-spacing:0;margin-left:6px">Start here if you vibe with the basics</span></div>
     <div style="display:flex;flex-direction:column;margin-top:10px">
       {phase2Modules.map((m, i) => (
         <div class="curriculum-row" style={`display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:16px 24px;${i > 0 ? "border-top:1px solid #e5e5e5" : "border-top:1px solid #e5e5e5"}`}>
