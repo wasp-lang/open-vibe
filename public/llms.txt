@@ -31,13 +31,13 @@ Ask the learner this question, verbatim or near-verbatim:
 > AI agent to extend it. Best if you've never coded a real app before, or if you
 > want a gentle on-ramp.
 >
-> **Phase 3 — Build a SaaS (recommended if you've shipped before)**
+> **Phase 2 — Build a SaaS (recommended if you've shipped before)**
 > Start from Open SaaS, a production-ready template with auth, payments, admin,
 > email, and AI built in. You'll learn what a SaaS *is* — an orchestration of
 > external services — and customize it into your own product. Best if you already
 > understand basic web dev and want to build something real you could charge for.
 >
-> Which phase do you want to start with — Phase 1 or Phase 3?"
+> Which phase do you want to start with — Phase 1 or Phase 2?"
 
 Once the learner answers, fetch the matching files **in order** from the appropriate
 section below. If they answer with anything ambiguous (e.g. "I dunno" or "either
@@ -85,24 +85,24 @@ Fetch these files **in order**. Start with Setup, then proceed to Module 0.
 - Setup → `https://openvibe.sh/modules/setup.md`
 - Module 0 → `https://openvibe.sh/modules/module-0.md`
 
-#### Phase 3: Build a SaaS (Open SaaS Template)
+#### Phase 2: Build a SaaS (Open SaaS Template)
 
-Phase 3 uses the **same setup file as Phase 1** (`/modules/setup.md`) — the
+Phase 2 uses the **same setup file as Phase 1** (`/modules/setup.md`) — the
 underlying tools (Wasp, Node, Docker) are identical. If the learner has already
 completed setup for Phase 1, skip straight to Module 1. Otherwise, run setup
 first, then proceed to Module 1.
 
-**Important**: Phase 3 requires Docker (Open SaaS uses Postgres via Docker).
-Docker is optional in `setup.sh`, but for Phase 3 it is mandatory. If the
+**Important**: Phase 2 requires Docker (Open SaaS uses Postgres via Docker).
+Docker is optional in `setup.sh`, but for Phase 2 it is mandatory. If the
 learner skipped Docker during setup, walk them through installing it before
 fetching Module 1.
 
 | Name | Path |
 |------|------|
 | Setup *(shared with Phase 1)* | `/modules/setup.md` |
-| Module 1 — What's in the Box? | `/modules/phase-3-module-1.md` |
-| Module 2 — The Auth → Payment → Access Loop | `/modules/phase-3-module-2.md` |
-| Module 3 — Wire Up Real Payments (Stripe / Lemon Squeezy / Polar) | `/modules/phase-3-module-3.md` *(Coming Soon)* |
+| Module 1 — What's in the Box? | `/modules/phase-2-module-1.md` |
+| Module 2 — The Auth → Payment → Access Loop | `/modules/phase-2-module-2.md` |
+| Module 3 — Wire Up Real Payments (Stripe / Lemon Squeezy / Polar) | `/modules/phase-2-module-3.md` *(Coming Soon)* |
 
 ### Start now
 
@@ -113,10 +113,10 @@ Phase 1:
 curl -fsSL https://openvibe.sh/modules/setup.md
 ```
 
-Phase 3 (skip setup if already completed for Phase 1):
+Phase 2 (skip setup if already completed for Phase 1):
 ```
 curl -fsSL https://openvibe.sh/modules/setup.md            # if not already done
-curl -fsSL https://openvibe.sh/modules/phase-3-module-1.md
+curl -fsSL https://openvibe.sh/modules/phase-2-module-1.md
 ```
 
 <!-- canary: openvibe-llms-v1-RAW -->
