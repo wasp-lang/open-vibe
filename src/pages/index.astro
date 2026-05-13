@@ -10,13 +10,12 @@ import imgPromptpanda      from '../assets/examples/promptpanda.webp';
 import imgReviewradar      from '../assets/examples/reviewradar.webp';
 const base = import.meta.env.BASE_URL;
 
-
-const INSTALL_PROMPT = `I'm starting the "Ship Your First App" course. Run \`curl -fsSL https://openvibe.sh/llms.txt\` and follow the file's instructions.`;
+const INSTALL_PROMPT = `I want to ship my app with Open Vibe. Run \`curl -fsSL https://openvibe.sh/llms.txt\` and follow the file's instructions.`;
 
 const navLinks = [
   { label: "See it in action", href: "#see-it-in-action" },
   { label: "How it works",     href: "#how-it-works" },
-  { label: "Curriculum",       href: "#curriculum" },
+  { label: "Phases",       href: "#phases" },
   { label: "FAQ",              href: "#faq" },
 ];
 
@@ -52,17 +51,19 @@ const phase2Modules = [
   { n: "Module 1", title: "What's in the Box?",                        status: "available" },
   { n: "Module 2", title: "The Auth → Payment → Access Loop",          status: "available" },
   { n: "Module 3", title: "Wire Up Real Payments",                     status: "soon" },
-  { n: "Modules 4 & Beyond", title: "TBD...",                     status: "soon" },
+  { n: "Module 4 & Beyond", title: "TBD...",                     status: "soon" },
 ];
 
 const faqs = [
-  { q: "Is it really free?",                       a: "Yes. Open Vibe is 100% free and open source. The curriculum, the skills, the diagrams — all of it, under MIT. Fork it, remix it, run your own class with it." },
+  { q: "Is it really free?",                       a: "Yes. Open Vibe is 100% free and open source. The agent instructions, the skills, the diagrams — all of it, under MIT. Fork it, remix it, run your own class with it." },
   { q: "Do I need to know how to code?",           a: "No. Open Vibe can be used by beginners or pros. You set the pace and focus your efforts as you see fit. If you can type, follow instructions, and stay curious, you can do this." },
   { q: "What agent does it work with?",            a: "It's been designed and tested in Claude Code but the course pack is plain Markdown and runs in any agent that can read files and execute tools." },
+  { q: "Will I learn to code?",                    a: "That's up to you! Open Vibe teaches the systems, patterns, and decisions a pro coder uses to build apps with today's AI tools, not coding syntax. But you are always free to ask the agent to explain the code to you." },
+  { q: "Why not just ask the agent to explain?",   a: "You can — but the agent doesn't know what you don't know. Without a plan, you end up asking surface questions and missing the systems beneath them. Open Vibe ships a curriculum, live diagrams, and skills that surface the right concepts at the right moment, so you learn the patterns under the code, not just the snippets." },
   { q: "Do I need an API key?",                    a: "You'll bring your own agent (Claude, Cursor, Codex, etc.) and its key or subscription. The course itself is free — we just teach on top of the tools you already use." },
-  { q: "How long does it take?",                   a: "The curriculum is built for ten weeks at ~6 hrs/week. People blow through it in three; people take six months. Your agent is patient either way." },
-  { q: "Is this a bootcamp with a certificate?",   a: "No. It's a course you do with an AI tutor. What you have at the end is three real apps in your GitHub and the knowledge to build more — which employers tend to find more convincing than paper." },
-  { q: "Why 'Open Vibe'?",                         a: "Because vibe-coding with an agent is how we actually build in 2026 — and Open Vibe teaches you to do it well, instead of building fragile apps you don't understand." },
+  { q: "How long does it take?",                   a: "Open Vibe is built for ten weeks at ~6 hrs/week. People blow through it in three; people take six months. Your agent is patient either way." },
+  { q: "Is this a bootcamp with a certificate?",   a: "No. It's a tool designed to help you build a production-ready SaaS and actually understand what you built, which is even more convincing than a course certificate these days." },
+  { q: "Why 'Open Vibe'?",                         a: "Because vibe-coding with an agent is how we actually build today. But the pros understand the underlying concepts and systems behind their app. This is what Open Vibe assists you in doing, rather than building fragile apps you don't understand." },
 ];
 
 const courseJsonLd = {
@@ -154,7 +155,7 @@ const courseJsonLd = {
         </ul>
       </div>
       <div class="ov-nav-right" style="display:flex;align-items:center;gap:14px">
-        <a class="ov-nav-github" href="https://github.com/wasp-lang/ship-your-first-app" target="_blank" style="font-size:14px;color:#0a0a0a;text-decoration:none;font-weight:500">GitHub ↗</a>
+        <a class="ov-nav-github" href="https://github.com/wasp-lang/open-vibe" target="_blank" style="font-size:14px;color:#0a0a0a;text-decoration:none;font-weight:500">GitHub ↗</a>
         <a href="#install" style="padding:9px 18px;border-radius:9999px;background:#001a42;color:#fafafa;font-size:13px;font-weight:600;text-decoration:none;font-family:var(--os-font-mono);display:inline-flex;align-items:center;gap:6px">Get Started <span style="opacity:0.7">→</span></a>
         <button class="ov-nav-hamburger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ov-mobile-menu" style="display:none;background:none;border:1px solid #e5e5e5;border-radius:8px;padding:0;cursor:pointer;width:40px;height:40px;align-items:center;justify-content:center;flex-direction:column;gap:5px">
           <span style="display:block;width:18px;height:2px;background:#0a0a0a;border-radius:2px;transition:transform .2s,opacity .2s"></span>
@@ -171,7 +172,7 @@ const courseJsonLd = {
           </li>
         ))}
         <li>
-          <a href="https://github.com/wasp-lang/ship-your-first-app" target="_blank" style="display:block;padding:14px 4px;font-size:16px;color:#0a0a0a;text-decoration:none;font-weight:500">GitHub ↗</a>
+          <a href="https://github.com/wasp-lang/open-vibe" target="_blank" style="display:block;padding:14px 4px;font-size:16px;color:#0a0a0a;text-decoration:none;font-weight:500">GitHub ↗</a>
         </li>
       </ul>
     </div>
@@ -199,7 +200,7 @@ const courseJsonLd = {
         </span>{" "}with AI. Confidently.
       </h1>
       <p style="font-size:18px;line-height:1.6;color:#737373;max-width:540px;margin:26px 0 0">
-        Build the skills of a pro coder while you ship a real SaaS app! Open Vibe turns Claude Code (or your agent of choice) into the ultimate SaaS tutor, teaching the most important concepts while you build.
+        Open Vibe turns Claude Code (or your agent of choice) into the ultimate SaaS-building assistant, helping you understand the systems behind a production-ready SaaS while building your own app idea.
       </p>
       <div class="ov-hero-ctas" style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap">
         <a href="#install" style="padding:14px 24px;border-radius:10px;background:#001a42;color:#fafafa;font-family:var(--os-font-mono);font-weight:700;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:8px">Get started — it's free <span>→</span></a>
@@ -207,7 +208,7 @@ const courseJsonLd = {
       </div>
       <div class="ov-hero-trust" style="margin-top:28px;display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:#737373;font-family:var(--os-font-mono)">
         <span>✓ 100% free &amp; open source</span>
-        <span>✓ No signup</span>
+        <span>✓ No signup required</span>
         <span>✓ MIT licensed</span>
       </div>
     </div>
@@ -397,7 +398,7 @@ const courseJsonLd = {
     <div style="text-align:center;max-width:780px;margin:0 auto 56px">
       <div style="font-family:var(--os-font-mono);font-size:12px;font-weight:600;color:#f5c518;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px">Stop getting left in the dark.</div>
       <h2 class="ov-h2" style="font-family:var(--os-font-mono);font-weight:700;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0;color:#fafafa">Stuck in the prompt-fix loop?</h2>
-      <p style="font-size:17px;line-height:1.55;color:#a0a4ad;margin-top:16px;margin-bottom:0">On vibe coding platforms, every prompt is a roll of the dice. You burn credits going in circles instead of learning what would actually let you ship.</p>
+      <p style="font-size:17px;line-height:1.55;color:#a0a4ad;margin-top:16px;margin-bottom:0">On vibe coding platforms, every prompt is a roll of the dice. You burn credits going in circles instead of shipping an app you actually understand.</p>
     </div>
 
     <!-- Replay card: chrome → 2-col body → full-width warning footer -->
@@ -502,18 +503,18 @@ const courseJsonLd = {
 <section id="why" class="ov-why" style="max-width:1120px;margin:0 auto;padding:120px 32px 40px">
   <div style="text-align:center;max-width:760px;margin:0 auto 56px">
     <div style="font-family:var(--os-font-mono);font-size:12px;font-weight:600;color:#bc7508;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px">Why Open Vibe</div>
-    <h2 class="ov-h2" style="font-family:var(--os-font-mono);font-weight:700;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0;color:#0a0a0a">Learn as you build. Ship faster.</h2>
+    <h2 class="ov-h2" style="font-family:var(--os-font-mono);font-weight:700;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0;color:#0a0a0a">Grok the system. Ship faster.</h2>
     <p style="font-size:17px;line-height:1.55;color:#737373;margin-top:16px;margin-bottom:0">Tutorials teach with throwaway apps. Vibe coding builds apps you don't understand. Open Vibe fixes both problems at once.</p>
   </div>
   <div class="ov-why-cards" style="max-width:900px;margin:0 auto;background:#faf1e3;border-radius:16px;border:1px solid #f5e6c8;padding:40px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px">
     <div style="background:#fff;border-radius:14px;border:1px solid #e5e5e5;padding:28px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--os-shadow-card)">
       <div style="width:34px;height:34px;border-radius:10px;background:#faf1e3;border:1px solid #f5e6c8;display:flex;align-items:center;justify-content:center;font-size:20px">💰</div>
-      <div style="font-family:var(--os-font-mono);font-weight:700;font-size:22px;color:#0a0a0a">Free and open-source</div>
-      <p style="margin:0;font-size:13.5px;line-height:1.55;color:#5a5a5a">Static tutorials cost $200–$400 for content that's outdated the day it ships. Open Vibe is open-source and stays free forever.</p>
+      <div style="font-family:var(--os-font-mono);font-weight:700;font-size:22px;color:#0a0a0a">Free and open source</div>
+      <p style="margin:0;font-size:13.5px;line-height:1.55;color:#5a5a5a">Static tutorials cost $200–$400 for content that's outdated the day it ships. Open Vibe is open source and stays free forever.</p>
     </div>
     <div style="background:#fff;border-radius:14px;border:1px solid #e5e5e5;padding:28px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--os-shadow-card)">
       <div style="width:34px;height:34px;border-radius:10px;background:#faf1e3;border:1px solid #f5e6c8;display:flex;align-items:center;justify-content:center;font-size:20px">🧩</div>
-      <div style="font-family:var(--os-font-mono);font-weight:700;font-size:22px;color:#0a0a0a">Tutorials live in your agent</div>
+      <div style="font-family:var(--os-font-mono);font-weight:700;font-size:22px;color:#0a0a0a">Lessons live in your agent</div>
       <p style="margin:0;font-size:13.5px;line-height:1.55;color:#5a5a5a">Run Open Vibe in your terminal, and your agent tutors as you build your SaaS. When something breaks, you understand why.</p>
     </div>
     <div style="background:#fff;border-radius:14px;border:1px solid #e5e5e5;padding:28px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--os-shadow-card)">
@@ -615,8 +616,8 @@ const courseJsonLd = {
   <div style="max-width:1120px;margin:0 auto">
     <div style="text-align:center;max-width:760px;margin:0 auto 56px">
       <div style="font-family:var(--os-font-mono);font-size:12px;font-weight:600;color:#bc7508;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px">How it works</div>
-      <h2 class="ov-h2" style="font-family:var(--os-font-mono);font-weight:700;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0;color:#0a0a0a">The course lives inside your agent.</h2>
-      <p style="font-size:17px;line-height:1.55;color:#737373;margin-top:16px;margin-bottom:0">Not a video library. Not a PDF. A set of skills, instructions, and interactive components that turn Claude Code — or any capable agent — into the world's most patient tutor.</p>
+      <h2 class="ov-h2" style="font-family:var(--os-font-mono);font-weight:700;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0;color:#0a0a0a">Your agent guides. You stay in control.</h2>
+      <p style="font-size:17px;line-height:1.55;color:#737373;margin-top:16px;margin-bottom:0">Not a video library. Not a PDF. A set of skills, instructions, and interactive components that turn Claude Code, or any capable agent, into the ultimate SaaS assistant and tutor.</p>
     </div>
     <div class="ov-how-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
 
@@ -624,11 +625,12 @@ const courseJsonLd = {
       <div style="background:#fff;border-radius:14px;border:1px solid #e5e5e5;padding:28px;display:flex;flex-direction:column;box-shadow:var(--os-shadow-card)">
         <div style="font-family:var(--os-font-mono);font-size:12px;font-weight:700;color:#bc7508;letter-spacing:1.5px">STEP 01</div>
         <h3 style="font-family:var(--os-font-mono);font-weight:700;font-size:22px;line-height:1.2;letter-spacing:-0.01em;margin:12px 0 10px;color:#0a0a0a">Paste the install prompt</h3>
-        <p style="font-size:14.5px;line-height:1.55;color:#737373;margin:0">Copy and pasting the prompt below drops the curriculum into your Claude Code (or any agent). No signup required.</p>
+        <p style="font-size:14.5px;line-height:1.55;color:#737373;margin:0">Copy-pasting the prompt below drops the guided instructions into your agent. No signup required.</p>
         <div style="margin-top:20px;padding:12px 14px;background:#111317;border-radius:8px;font-family:var(--os-font-mono);font-size:12px;color:#d0d0d6;border:1px solid #f5e6c8;line-height:1.5;position:relative">
           <button
             data-copy={INSTALL_PROMPT}
             data-copied-label="✓ Copied"
+            data-copy-location="step-01"
             style="position:absolute;top:8px;right:8px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.08);color:#d0d0d6;border:1px solid rgba(255,255,255,0.15);font-family:var(--os-font-mono);font-size:10.5px;font-weight:600;cursor:pointer;line-height:1.2"
           >Copy</button>
           <div style="padding-right:54px">{INSTALL_PROMPT}</div>
@@ -638,8 +640,8 @@ const courseJsonLd = {
       <!-- Step 02: build alongside -->
       <div style="background:#fff;border-radius:14px;border:1px solid #e5e5e5;padding:28px;display:flex;flex-direction:column;box-shadow:var(--os-shadow-card)">
         <div style="font-family:var(--os-font-mono);font-size:12px;font-weight:700;color:#bc7508;letter-spacing:1.5px">STEP 02</div>
-        <h3 style="font-family:var(--os-font-mono);font-weight:700;font-size:22px;line-height:1.2;letter-spacing:-0.01em;margin:12px 0 10px;color:#0a0a0a">Build alongside your tutor</h3>
-        <p style="font-size:14.5px;line-height:1.55;color:#737373;margin:0">Start building your app idea. The agent guides you step-by-step; building, explaining, pairing, and quizzing.</p>
+        <h3 style="font-family:var(--os-font-mono);font-weight:700;font-size:22px;line-height:1.2;letter-spacing:-0.01em;margin:12px 0 10px;color:#0a0a0a">Build alongside your assistant</h3>
+        <p style="font-size:14.5px;line-height:1.55;color:#737373;margin:0">The agent guides you step-by-step, building and facilitating your understanding of the concepts behind your SaaS.</p>
         <div style="margin-top:20px;padding:12px 14px 14px;background:#111317;border-radius:8px;border:1px solid #f5e6c8;font-family:var(--os-font-mono);font-size:11.5px;line-height:1.6;color:#d0d0d6">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #2a2a30">
             <span style="width:8px;height:8px;border-radius:50%;background:#ff5f56"></span>
@@ -653,7 +655,7 @@ const courseJsonLd = {
           </div>
           <div style="padding:5px 8px;background:#2a2a2e;border-radius:3px;display:flex;align-items:center;gap:4px">
             <span style="color:#7a7a82">&gt;&nbsp;</span>
-            <span>Makes sense. Let's continue with the lesson<span style="display:inline-block;width:5px;height:11px;background:#d0d0d6;margin-left:2px;vertical-align:text-bottom;animation:ovBlink 1.1s steps(2) infinite"></span></span>
+            <span>Makes sense. Let's continue!<span style="display:inline-block;width:5px;height:11px;background:#d0d0d6;margin-left:2px;vertical-align:text-bottom;animation:ovBlink 1.1s steps(2) infinite"></span></span>
           </div>
         </div>
       </div>
@@ -694,13 +696,13 @@ const courseJsonLd = {
 </section>
 
 <!-- ============================================================
-     Curriculum
+     Phases
 ============================================================ -->
-<section id="curriculum" class="ov-curriculum" style="max-width:1120px;margin:0 auto;padding:120px 32px">
+<section id="phases" class="ov-curriculum" style="max-width:1120px;margin:0 auto;padding:120px 32px">
   <div style="text-align:center;max-width:760px;margin:0 auto 56px">
-    <div style="font-family:var(--os-font-mono);font-size:12px;font-weight:600;color:#bc7508;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px">Curriculum</div>
-    <h2 class="ov-h2" style="font-family:var(--os-font-mono);font-weight:700;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0;color:#0a0a0a">Choose your own (learning) adventure.</h2>
-    <p style="font-size:17px;line-height:1.55;color:#737373;margin-top:16px;margin-bottom:0">Start with the lessons that suit you. Go at your own pace. New modules drop as they're ready.</p>
+    <div style="font-family:var(--os-font-mono);font-size:12px;font-weight:600;color:#bc7508;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px">Phases</div>
+    <h2 class="ov-h2" style="font-family:var(--os-font-mono);font-weight:700;font-size:40px;line-height:1.1;letter-spacing:-0.02em;margin:0;color:#0a0a0a">Choose your own (app) adventure.</h2>
+    <p style="font-size:17px;line-height:1.55;color:#737373;margin-top:16px;margin-bottom:0">Start with the phase that suits you. Go at your own pace. New modules drop as they're ready.</p>
   </div>
 
   <!-- Phase 1 (active) -->
@@ -710,7 +712,7 @@ const courseJsonLd = {
       <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#0a0a0a;letter-spacing:-0.01em">Learn the basics of web apps</div>
       <span style="padding:5px 12px;border-radius:6px;background:#ffdc5c;color:#b45309;font-family:var(--os-font-mono);font-size:11.5px;font-weight:700;letter-spacing:1px">AVAILABLE</span>
     </div>
-    <div style="padding:14px 24px 14px;font-size:13.5px;color:#737373;line-height:1.55">Build and deploy a full-stack app from scratch while your agent explains how the web and apps work.<span style="font-weight:400;font-style:italic;color:#a3a3a3;font-size:13px;letter-spacing:0;margin-left:6px">Start here if you're a newbie</span></div>
+    <div style="padding:14px 24px 14px;font-size:13.5px;color:#737373;line-height:1.55">Build and deploy a full-stack app from scratch while your agent explains how the web and apps work.<span style="font-weight:400;font-style:italic;color:#a3a3a3;font-size:13px;letter-spacing:0;margin-left:6px">Start here if you're new to web apps</span></div>
     <div style="display:flex;flex-direction:column;border-top:1px solid #e5e5e5">
       {phase1Modules.map((m, i) => (
         <div class="curriculum-row" style={`display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:16px 24px;${i > 0 ? "border-top:1px solid #e5e5e5" : ""}`}>
@@ -732,10 +734,10 @@ const courseJsonLd = {
   <div style="margin-top:14px;background:#fff;border-radius:16px;border:1px solid #f5e6c8;overflow:hidden;box-shadow:var(--os-shadow-card)">
     <div style="display:flex;align-items:center;gap:16px;padding:18px 24px;background:#faf1e3;border-bottom:1px solid #f5e6c8">
       <div style="font-family:var(--os-font-mono);font-size:11px;font-weight:700;color:#bc7508;letter-spacing:1.5px;padding:4px 10px;border-radius:6px;background:#fff;border:1px solid #f5e6c8;flex-shrink:0">PHASE 2</div>
-      <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#0a0a0a;letter-spacing:-0.01em">Build a SaaS with Open SaaS </div>
+      <div style="flex:1;font-family:var(--os-font-mono);font-weight:700;font-size:17px;color:#0a0a0a;letter-spacing:-0.01em">Build a SaaS with Open SaaS</div>
       <span style="padding:5px 12px;border-radius:6px;background:#ffdc5c;color:#b45309;font-family:var(--os-font-mono);font-size:11.5px;font-weight:700;letter-spacing:1px">AVAILABLE</span>
     </div>
-    <div style="padding:14px 24px 4px;font-size:13.5px;color:#737373;line-height:1.55">Build your SaaS idea on top of <a href="https://opensaas.sh" target="_blank" style="color:#0a0a0a;text-decoration:underline">Open SaaS</a> — a production-ready template with auth, payments, admin, email, and AI built in — while learning the essentials.<span style="font-weight:400;font-style:italic;color:#a3a3a3;font-size:13px;letter-spacing:0;margin-left:6px">Start here if you vibe with the basics</span></div>
+    <div style="padding:14px 24px 4px;font-size:13.5px;color:#737373;line-height:1.55">Build your SaaS idea on top of <a href="https://opensaas.sh" target="_blank" style="color:#0a0a0a;text-decoration:underline">Open SaaS</a> — a production-ready template with auth, payments, admin, email, and AI built in — while learning the essentials.<span style="font-weight:400;font-style:italic;color:#a3a3a3;font-size:13px;letter-spacing:0;margin-left:6px">Start here if you've got the basics down</span></div>
     <div style="display:flex;flex-direction:column;margin-top:10px">
       {phase2Modules.map((m, i) => (
         <div class="curriculum-row" style={`display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:16px 24px;${i > 0 ? "border-top:1px solid #e5e5e5" : "border-top:1px solid #e5e5e5"}`}>
@@ -796,6 +798,7 @@ const courseJsonLd = {
           <button
             data-copy={INSTALL_PROMPT}
             data-copied-label="✓ COPIED"
+            data-copy-location="install-cta"
             style="flex-shrink:0;padding:5px 12px;border-radius:6px;background:rgba(255,255,255,0.1);color:rgba(247,234,214,0.9);border:1px solid rgba(255,255,255,0.15);font-family:var(--os-font-mono);font-size:11px;font-weight:700;cursor:pointer;letter-spacing:0.5px"
           >COPY</button>
         </div>
@@ -807,9 +810,9 @@ const courseJsonLd = {
         </div>
       </div>
       <div style="margin-top:18px;display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:rgba(247,234,214,0.55);font-family:var(--os-font-mono)">
-        <span>★ MIT licensed</span>
-        <span>no account required</span>
-        <span>works with Claude Code, Cursor, Codex, Open Code, etc.</span>
+        <span>✓ MIT licensed</span>
+        <span>✓ No signup required</span>
+        <span>✓ Works with Claude Code, Cursor, Codex, OpenCode, etc.</span>
       </div>
       <div style="margin-top:20px;display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(247,234,214,0.6)">
         <span>Stuck on setup?</span>
@@ -837,7 +840,7 @@ const courseJsonLd = {
       <div>
         <h4 style="font-family:var(--os-font-mono);font-size:12px;font-weight:700;margin:0 0 16px;text-transform:uppercase;letter-spacing:1px">Course</h4>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
-          {[["#curriculum","Curriculum"],["#how-it-works","How it works"],["#faq","FAQ"]].map(([href,label]) => (
+          {[["#phases","Phases"],["#how-it-works","How it works"],["#faq","FAQ"]].map(([href,label]) => (
             <li><a href={href} style="font-size:13px;color:#737373;text-decoration:none">{label}</a></li>
           ))}
         </ul>
@@ -845,7 +848,7 @@ const courseJsonLd = {
       <div>
         <h4 style="font-family:var(--os-font-mono);font-size:12px;font-weight:700;margin:0 0 16px;text-transform:uppercase;letter-spacing:1px">Project</h4>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
-          {[["https://github.com/wasp-lang/ship-your-first-app","GitHub ↗"],["https://github.com/wasp-lang/ship-your-first-app","Contribute"],["https://github.com/wasp-lang/ship-your-first-app","License (MIT)"]].map(([href,label]) => (
+          {[["https://github.com/wasp-lang/open-vibe","GitHub ↗"],["https://github.com/wasp-lang/open-vibe","Contribute"],["https://github.com/wasp-lang/open-vibe","License (MIT)"]].map(([href,label]) => (
             <li><a href={href} target="_blank" style="font-size:13px;color:#737373;text-decoration:none">{label}</a></li>
           ))}
         </ul>
@@ -1111,6 +1114,7 @@ const courseJsonLd = {
     btn.addEventListener('click', e => {
       e.stopPropagation();
       navigator.clipboard?.writeText(btn.dataset.copy ?? '');
+      (window as any).plausible?.('Copy Prompt', { props: { location: btn.dataset.copyLocation ?? 'unknown' } });
       const orig = btn.textContent ?? '';
       btn.textContent = btn.dataset.copiedLabel ?? '✓ Copied';
       btn.dataset.copied = 'true';

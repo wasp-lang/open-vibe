@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# setup.sh — Ship Your First App: Dev Environment Installer
+# setup.sh — Open Vibe: Dev Environment Installer
 # Usage: bash setup.sh [--yes]
 # Or:    curl -fsSL https://openvibe.sh/setup.sh | bash
 set -euo pipefail
@@ -48,7 +48,7 @@ print_header() {
     printf "\n"
     printf "${CYAN}${BOLD}"
     printf "  ╔═══════════════════════════════════════════╗\n"
-    printf "  ║       Ship Your First App  —  Setup       ║\n"
+    printf "  ║       Open Vibe  —  Setup       ║\n"
     printf "  ╚═══════════════════════════════════════════╝\n"
     printf "${NC}\n"
     printf "  ${DIM}This script checks your dev environment and${NC}\n"
@@ -360,7 +360,7 @@ main() {
                 ;;
             --help|-h)
                 printf "Usage: bash setup.sh [OPTIONS]\n\n"
-                printf "Sets up your dev environment for Ship Your First App.\n\n"
+                printf "Sets up your dev environment for Open Vibe.\n\n"
                 printf "Options:\n"
                 printf "  --yes, -y    Auto-accept all prompts\n"
                 printf "  --help, -h   Show this help message\n"

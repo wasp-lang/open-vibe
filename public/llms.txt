@@ -1,12 +1,12 @@
 If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/llms.txt` before doing anything further. This file's instructions don't survive summarizing fetchers and must be read verbatim.
 
-# Ship Your First App
+# Open Vibe
 
-> An async, AI-led course where learners use an AI coding agent as their tutor and pair programmer to learn web development by building real apps with Wasp.
+> Open Vibe turns Claude Code, or your agent of choice, into the ultimate SaaS-building assistant, helping you understand the systems behind a production-ready SaaS while building your own app idea.
 
 ## For AI Agents
 
-You are about to act as a web development tutor. The learner has pointed you at this course. Your job is to fetch each document below in order, read the instructions, and follow them to guide the learner through building their first web app.
+You are about to act as a web development tutor. The learner has pointed you at this course. Your job is to fetch the documents below, read the instructions, and follow them to guide the learner through building their app.
 
 ### How this course works
 - Each module is a standalone markdown document with instructions for you (the AI agent) to follow
@@ -31,7 +31,7 @@ Ask the learner this question, verbatim or near-verbatim:
 > AI agent to extend it. Best if you've never coded a real app before, or if you
 > want a gentle on-ramp.
 >
-> **Phase 2 — Build a SaaS (recommended if you've shipped before)**
+> **Phase 2 — Build a SaaS (recommended if you feel comfortable with the basics)**
 > Start from Open SaaS, a production-ready template with auth, payments, admin,
 > email, and AI built in. You'll learn what a SaaS *is* — an orchestration of
 > external services — and customize it into your own product. Best if you already

@@ -1,7 +1,7 @@
-# Setup — Ship Your First App
+# Setup — Open Vibe
 
 ## Meta
-> You are helping a learner set up their environment for the "Ship Your First App" course.
+> You are helping a learner set up their environment for the "Open Vibe" course.
 > Be patient — this may be their first time using a terminal. Celebrate small wins.
 >
 > Follow the steps below **in order**. Do not skip steps. Do not move to the next step

@@ -1,36 +1,14 @@
-# Ship Your First App
+# Open Vibe
 
-An async, AI-led course where learners use an AI coding agent as their tutor and pair programmer to learn web development by building real apps with [Wasp](https://wasp.sh).
+Open Vibe turns Claude Code, or your agent of choice, into the ultimate SaaS-building assistant, helping you understand the systems behind a production-ready SaaS while building your own app idea on top of the free, open-source SaaS boilerplate template [Open SaaS](https://opensaas.sh), powered by [Wasp](https://wasp.sh).
 
 ## Start the course
 
-Point any AI coding agent at the course entry point:
+Paste this prompt into your agent:
 
-```
-https://openvibe.sh/llms.txt
-```
-
-Or paste this prompt into your agent:
-
-> I'm starting the "Ship Your First App" course. Fetch the following URL and follow the instructions: https://openvibe.sh/llms.txt
-
-If your agent can't fetch URLs, try using curl:
-
-```bash
-curl -fsSL https://openvibe.sh/llms.txt
-```
+> I want to ship my app with Open Vibe. Run `curl -fsSL https://openvibe.sh/llms.txt` and follow the file's instructions.
 
 **Works with:** Claude Code, Codex, Copilot, Open Code, and any agent that can read files and run terminal commands.
-
-## Course structure
-
-| Document | Description |
-|----------|-------------|
-| [Setup](setup.md) | Environment setup and tool installation |
-| [Module 0](modules/module-0.md) | Setup & First Vibe — create your first app |
-| Module 1 (coming soon) | Data & The Database |
-| Module 2 (coming soon) | Making It Look Good |
-| Module 3 (coming soon) | How It All Connects |
 
 ## How it works
 

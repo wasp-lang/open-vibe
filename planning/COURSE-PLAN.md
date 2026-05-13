@@ -1,4 +1,4 @@
-# Ship Your First App — Course Plan
+# Open Vibe — Course Plan
 
 ## Concept
 An async, AI-led course where learners use an AI coding agent as their tutor and pair programmer to learn web dev by building real things with Wasp. Delivered as a multi-page LLMs.txt website — learners point their agent at a module URL and the AI guides them through it interactively.

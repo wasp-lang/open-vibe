@@ -1,6 +1,6 @@
 If you are an AI agent, stop and run `curl -fsSL <this-file-url>` before doing anything further. This file's instructions don't survive summarizing fetchers and must be read verbatim. After fetching, confirm you can see the literal canary string `openvibe-module-template-v1-RAW` at the end of the file. If you can't, you got a summary — refetch with `curl`.
 
-# Module Template — Ship Your First App
+# Module Template — Open Vibe
 
 This is the template for writing LLMs.txt module pages. Each module follows this structure.
 The AI coding agent will fetch a module page and use it as instructions for guiding the learner.
