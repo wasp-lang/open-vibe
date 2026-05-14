@@ -65,6 +65,15 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 > - `ASK:` — YOU (the agent) ask the learner this question and wait for their response
 >   before continuing. Do not answer it for them.
 >
+> **IMPORTANT FOR AI AGENTS**:
+> Commands marked `LEARNER:` must never be executed by the agent, even if the
+> agent has terminal access. Print the command for the learner, then stop and
+> wait for the learner to confirm it finished or paste the output. This is
+> especially important for long-running commands and commands that require an
+> interactive terminal.
+>
+> The agent may only execute commands marked `RUN:`.
+>
 > **Showing code**: The learner may not have a code editor open — they might only have
 > a terminal and a browser. Never tell them to "open a file" or "look at line 42."
 > Instead, print short, focused snippets directly in your response using fenced code
@@ -98,7 +107,12 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 - Learner has completed setup (`/modules/setup.md`) — same setup script as Phase 1.
 - **Docker is required for Phase 2** (Open SaaS uses Postgres via Docker). The setup script lists Docker as optional; for Phase 2 it is mandatory. If Docker is not installed and running, pause and install it before continuing.
 - Learner is in an empty working directory where they want their SaaS project to live.
-- VERIFY: Run `wasp version` (must output a version), `node --version` (must be v22+), and `docker --version` (must be installed). Then run `docker info` to confirm the Docker daemon is actually running. If `docker info` fails with "Cannot connect to the Docker daemon," the daemon isn't running — tell the learner to start it. On macOS/Windows that usually means opening Docker Desktop (or Colima/OrbStack/Rancher Desktop if they prefer those). On Linux the daemon should already be running as a systemd service; if not, they may need `sudo systemctl start docker`.
+- VERIFY with short, safe agent checks:
+  - RUN: `wasp version`
+  - RUN: `node --version`
+  - RUN: `docker --version`
+  - RUN: `docker info`
+  - Confirm `wasp version` outputs a version, `node --version` is v22+, `docker --version` is installed, and `docker info` shows the Docker daemon is running. If `docker info` fails with "Cannot connect to the Docker daemon," the daemon isn't running — tell the learner to start it. On macOS/Windows that usually means opening Docker Desktop (or Colima/OrbStack/Rancher Desktop if they prefer those). On Linux the daemon should already be running as a systemd service; if not, they may need `sudo systemctl start docker`.
 
 ## Learning Objectives
 By the end of this module, the learner will:
@@ -164,26 +178,32 @@ RUN: `cp .env.server.example .env.server`
 
 (Note: Open SaaS does not require a separate `.env.client` for the bare-minimum boot. If you discover one is needed for a specific feature later, we'll handle it in the relevant module.)
 
-Now we need **two long-running terminals** owned by the learner — one for the database, one for the app. The agent's terminal can keep being used for short commands, but the two below need to stay open and dedicated.
+STOP: From here until the app is running, the learner owns the terminal commands.
+Do not run these commands in the agent terminal.
+Each learner terminal must be in the `my-saas/app` directory before running the command; give the learner the exact `cd` path if needed.
 
-LEARNER: 👉 **Terminal A — database**: open a new terminal, `cd` into `my-saas/app`, then run:
+LEARNER: Terminal A — run:
 ```
 wasp start db
 ```
 
-Wait until you see output indicating Postgres is ready and listening (typically on port 5432). Leave Terminal A alone for the rest of the module — do not close it, do not Ctrl-C it.
+ASK: "Tell me when Terminal A says Postgres is ready/listening."
 
-LEARNER: 👉 **Terminal B — app**: open a *second* terminal, `cd` into the same `my-saas/app` directory, then run:
+LEARNER: Terminal B — run:
 ```
 wasp db migrate-dev --name init
 ```
 
-This creates the initial database schema. We use `--name init` so the migration name is passed directly — interactive prompts for migration names hang in most AI coding agents. This may take a minute the first time (it installs all dependencies). Wait for it to complete with a "migration applied" message.
+This creates the initial database schema. `wasp db migrate-dev` must run in the learner's real terminal because Prisma may reject agent/non-interactive shells. This may take a minute the first time because it installs dependencies.
 
-LEARNER: 👉 In Terminal B, run:
+ASK: "Tell me when the migration finishes, or paste any error."
+
+LEARNER: In Terminal B — run:
 ```
 wasp start
 ```
+
+ASK: "Tell me when the app is running at http://localhost:3000."
 
 Once the app is up at `http://localhost:3000`, suggest they arrange their browser and Terminal B side by side so they can see both. Terminal A (running `wasp start db`) can stay minimized — just don't close it.
 
@@ -344,6 +364,8 @@ wasp db studio
 ```
 
 This launches Prisma Studio in the browser — a spreadsheet-like view of your database tables.
+
+ASK: "Tell me when Prisma Studio is open at http://localhost:5555."
 
 LEARNER: 👉 In Prisma Studio, click the **User** model in the left sidebar, find the row for the email you signed up with, change `isAdmin` from `false` to `true`, and click **Save 1 change** at the top.
 

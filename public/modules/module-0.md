@@ -50,6 +50,15 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/mod
 > - `ASK:` — YOU (the agent) ask the learner this question and wait for their response
 >   before continuing. Do not answer it for them.
 >
+> **IMPORTANT FOR AI AGENTS**:
+> Commands marked `LEARNER:` must never be executed by the agent, even if the
+> agent has terminal access. Print the command for the learner, then stop and
+> wait for the learner to confirm it finished or paste the output. This is
+> especially important for long-running commands and commands that require an
+> interactive terminal.
+>
+> The agent may only execute commands marked `RUN:`.
+>
 > **Progress tracking**: At the start of the module, check for a `public/course-progress.json`
 > file in the project root. If it exists and references this module, resume from the
 > last completed beat instead of starting over. Progress is updated at the *start*
@@ -73,7 +82,10 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/mod
 
 ## Prerequisites
 - Learner has run the setup script (`setup.sh`) and all tools should be installed
-- VERIFY: Run `wasp version` and confirm it outputs a version number (e.g., `0.21.x`). Run `node --version` and confirm it shows `v22` or higher. If either fails, direct them to re-run the setup script.
+- VERIFY with short, safe agent checks:
+  - RUN: `wasp version`
+  - RUN: `node --version`
+  - Confirm `wasp version` outputs a version number (e.g., `0.21.x`) and `node --version` shows `v22` or higher. If either fails, direct the learner to re-run the setup script.
 
 ## Learning Objectives
 By the end of this module, the learner will:
@@ -119,22 +131,27 @@ Print progress bar.
 
 SAY: "The next few steps — setting up the database and starting the app — can take a few minutes the first time since it needs to download and install dependencies. I'll keep you posted as we go."
 
-RUN: `wasp db migrate-dev --name init`
-- IMPORTANT: The `--name` flag MUST BE provided so the command doesn't hang waiting for interactive input!
+STOP: From here until the app is running, the learner owns the terminal commands.
+Do not run these commands in the agent terminal.
 
-SAY: "This command sets up your database — think of it as creating an empty spreadsheet with the right column headers, ready for data."
-
-LEARNER: Run `wasp start` in a new terminal.
-SAY: "Now it's your turn to run a command! Open a **new terminal window or tab**, then run these two commands then tell me when you're ready to continue:"
+LEARNER: In a real terminal — run:
 ```
 cd <full-path-to-their-app>
+wasp db migrate-dev --name init
+```
+
+This command sets up your database — think of it as creating an empty spreadsheet with the right column headers, ready for data. `wasp db migrate-dev` must run in the learner's real terminal because Prisma may reject agent/non-interactive shells. The `--name` flag is required so the command doesn't hang waiting for an interactive migration-name prompt.
+
+ASK: "Tell me when the migration finishes, or paste any error."
+
+LEARNER: In that same terminal — run:
+```
 wasp start
 ```
-Give them the exact `cd` path based on where their project was created so they don't have to guess.
 
-If the learner has trouble (can't find terminal, wrong directory, errors), help them troubleshoot. As a last resort, run `wasp start` for them as a background task.
+Give them the exact `cd` path based on where their project was created so they don't have to guess. If the learner has trouble (can't find terminal, wrong directory, errors), help them troubleshoot, but do not run `wasp start` for them.
 
-PAUSE HERE 
+ASK: "Tell me when the app is running at http://localhost:3000."
 
 SAY: "Your app is now running in that terminal window. **Keep it open** — don't close it! You'll want to check back there periodically because the app will sometimes print useful information there (like email verification links). Think of it as your app's logbook."
 - Suggest they arrange their windows: "Try putting your terminal and browser side by side — that way you'll see changes update in real time as we work."

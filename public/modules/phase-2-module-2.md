@@ -73,6 +73,15 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 >   Do not skip or significantly rephrase these.
 > - `ASK:` — YOU (the agent) ask this question and wait for a response.
 >
+> **IMPORTANT FOR AI AGENTS**:
+> Commands marked `LEARNER:` must never be executed by the agent, even if the
+> agent has terminal access. Print the command for the learner, then stop and
+> wait for the learner to confirm it finished or paste the output. This is
+> especially important for long-running commands and commands that require an
+> interactive terminal.
+>
+> The agent may only execute commands marked `RUN:`.
+>
 > **Showing code**: The learner may not have a code editor open — they might only
 > have a terminal and a browser. Never tell them to "open a file" or "look at line
 > 42." Instead, print short, focused snippets directly in your response using fenced
@@ -105,7 +114,7 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 - Learner has completed Phase 2 Module 1 (`phase-2-module-1.md`).
 - The Open SaaS app is scaffolded under `my-saas/app/` and runs cleanly via `wasp start db` + `wasp start`.
 - A test user exists (the one created in Module 1 via the dummy email signup flow).
-- VERIFY: From `my-saas/app/`, run `wasp start db` (in terminal A) and `wasp start` (in terminal B). The app should boot at `http://localhost:3000`. If it doesn't, walk back through Module 1 Beat 1 before continuing.
+- VERIFY: Confirm the learner already has Terminal A running `wasp start db`, Terminal B running `wasp start`, and the app open at `http://localhost:3000`. Do not start these from the agent terminal. If the app is not running, walk back through Module 1 Beat 1 before continuing.
 
 ## Learning Objectives
 By the end of this module, the learner will:
@@ -380,6 +389,8 @@ wasp db studio
 ```
 
 This will open a browser tab at `http://localhost:5555` showing your database tables.
+
+ASK: "Tell me when Prisma Studio is open at http://localhost:5555."
 
 LEARNER: 👉 In Prisma Studio, click the **User** table. Find the row for your test user (look at the `email` column).
 
