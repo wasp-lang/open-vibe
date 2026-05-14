@@ -364,6 +364,10 @@ app/src/
 
 SAY: "See how the folders are named after *what they do*, not *what kind of code they are*? Most of these folders exist because of an external service we just talked about. That's the glue, right there in the file tree."
 
+STOP: Do not continue until the user confirms they understand the concept above. Answer any questions first before confirming understanding.
+
+ASK: Does this concept of a SaaS app make sense? 
+
 Now make the glue tangible. Print this snippet to show them what an `.env.server` file looks like (do NOT have them open the file — just print a sanitized example):
 
 ```env
@@ -380,11 +384,13 @@ GOOGLE_CLIENT_ID=...
 
 SAY: "This file is the *list of services your app is plugged into*. Every line is a key that lets your app talk to one external service. When you hear someone say 'modern dev is just gluing APIs together' — *this* is what they mean."
 
-There's one more file worth naming, even though we won't open it today: `main.wasp` (in the `app/` directory). Tell the learner: "That file is the *control panel* of your SaaS — it's where you declare your auth methods, your routes, your database models, your background jobs, and your webhook endpoints. Wasp reads it and wires everything up. We'll start touching it in Module 2 — for now, just know it exists and that it's the master config."
+SAY: There's one more file worth naming, even though we won't open it today: `main.wasp` (in the `app/` directory). Tell the learner: "That file is the *control panel* of your SaaS — it's where you declare your auth methods, your routes, your database models, your background jobs, and your webhook endpoints. Wasp reads it and wires everything up. We'll start touching it in Module 2 — for now, just know it exists and that it's the master config."
 
-Now show them the admin side. The admin dashboard at `/admin` is gated by an `isAdmin` boolean on the user — by default, the account they just signed up with isn't an admin yet, so visiting `/admin` will bounce them. We'll flip that flag now so they can see what's behind the gate.
+STOP: Do not continue until the user confirms they are ready.
 
-SAY: "Open SaaS keeps the admin area locked behind an `isAdmin` flag on your user record. There are two ways to flip it: set `ADMIN_EMAILS` in `.env.server` *before* you sign up (any email in that list becomes admin on first login), or — since you've already signed up — open Wasp's database GUI and toggle the field by hand. We'll do the second one."
+ASK: Great. Now we're going to actually modify some properties in our database. Ready to continue?
+
+SAY: In your app, there is also a secret entrance for administrators. It's not a seperate app or anything, just a dashboard that's only meant for the owners of the app. The admin dashboard at `/admin` is gated by an `isAdmin` boolean on the user — by default, the account they just signed up with isn't an admin yet, so visiting `/admin` won't work for you. We'll flip that flag now so they can see what's behind the gate.
 
 LEARNER: 👉 Open a **new terminal** (leave `wasp start db` and `wasp start` running in the others), `cd` into the `app/` directory, and run:
 
