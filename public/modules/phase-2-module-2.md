@@ -72,6 +72,19 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 > - `SAY:` — YOU (the agent) tell the learner this message (verbatim or near-verbatim).
 >   Do not skip or significantly rephrase these.
 > - `ASK:` — YOU (the agent) ask this question and wait for a response.
+> - `STOP:` — YOU (the agent) must not continue past this point until the blocking
+>   condition is satisfied. Usually this means waiting for the learner to confirm
+>   completion, paste output, or describe what they see. `STOP:` should usually be
+>   followed by an `ASK:` that creates the checkpoint.
+>
+> **IMPORTANT FOR AI AGENTS**:
+> Commands marked `LEARNER:` must never be executed by the agent, even if the
+> agent has terminal access. Print the command for the learner, then stop and
+> wait for the learner to confirm it finished or paste the output. This is
+> especially important for long-running commands and commands that require an
+> interactive terminal.
+>
+> The agent may only execute commands marked `RUN:`.
 >
 > **Showing code**: The learner may not have a code editor open — they might only
 > have a terminal and a browser. Never tell them to "open a file" or "look at line
@@ -105,7 +118,7 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 - Learner has completed Phase 2 Module 1 (`phase-2-module-1.md`).
 - The Open SaaS app is scaffolded under `my-saas/app/` and runs cleanly via `wasp start db` + `wasp start`.
 - A test user exists (the one created in Module 1 via the dummy email signup flow).
-- VERIFY: From `my-saas/app/`, run `wasp start db` (in terminal A) and `wasp start` (in terminal B). The app should boot at `http://localhost:3000`. If it doesn't, walk back through Module 1 Beat 1 before continuing.
+- VERIFY: Confirm the learner already has Terminal A running `wasp start db`, Terminal B running `wasp start`, and the app open at `http://localhost:3000`. Do not start these from the agent terminal. If the app is not running, walk back through Module 1 Beat 1 before continuing.
 
 ## Learning Objectives
 By the end of this module, the learner will:
@@ -140,11 +153,23 @@ The most natural gate in Open SaaS is the **credits gate** on the AI demo app. E
 
 The learner should still be logged in as the test user from Module 1. If they aren't, have them log back in.
 
-LEARNER: 👉 In your browser, open the running app at `http://localhost:3000`. Make sure you're logged in. Navigate to the AI demo page (usually accessible from the dashboard nav — it may be called "Demo App" or "AI Scheduler" depending on template version).
+STOP: Walk the learner to the gate one step at a time. Do not continue until they confirm they are on the expected page.
+
+LEARNER: 👉 In your browser, open the running app at `http://localhost:3000` and make sure you're logged in.
+
+ASK: "Tell me when you're logged in to the app, or paste what happened."
+
+LEARNER: 👉 Navigate to the AI demo page (usually accessible from the dashboard nav — it may be called "Demo App" or "AI Scheduler" depending on template version).
+
+ASK: "Tell me when you're on the AI demo page, or if you don't see one."
 
 LEARNER: 👉 Try the existing "Generate" / "Submit" button on the demo page.
 
 This will fail — most likely with a server error about a missing `OPENAI_API_KEY` (visible in the `wasp start` terminal logs and/or as a UI error). That's expected. The demo's *real* button calls OpenAI, which we haven't wired up yet.
+
+STOP: Wait until the learner confirms they saw the missing-`OPENAI_API_KEY` failure, or pastes the error they actually saw.
+
+ASK: "Tell me what happened when you clicked Generate/Submit, or paste the error."
 
 SAY: "We hit a wall — but it's the wrong kind of wall. That's a missing API key, not the credits gate we want to learn about. Real OpenAI setup is a Module 3 problem. To learn the *loop* — how credits get checked and consumed — we don't actually need OpenAI at all. We just need something that *uses* a credit. Let me add a tiny stand-in button to the demo page. It'll behave exactly like the real one for our purposes — checks credits, consumes one if available, fails when you're out — but instead of calling OpenAI, it just pops a browser alert. Same loop, no third-party dependency."
 
@@ -224,9 +249,17 @@ LEARNER: 👉 Refresh the AI demo page in your browser. You should see a new yel
 
 You should see a browser alert with the pretend response and "Credits remaining: 2" (or similar — it depends on whether they already consumed any in earlier clicks).
 
+STOP: Wait until the learner confirms the new button appeared and they saw the success alert.
+
+ASK: "Tell me when you clicked the new button and what the alert said, or paste what happened."
+
 LEARNER: 👉 Click the button repeatedly until credits hit 0.
 
 The first 2-3 clicks will succeed. Eventually one click will alert "You're out of credits!" — that's the gate. Point it out:
+
+STOP: Wait until the learner confirms they actually hit the gate and saw \"You're out of credits!\"
+
+ASK: "Tell me when you hit the gate and saw \"You're out of credits!\", or paste what happened."
 
 SAY: "*That* alert right there. Just now. That's a gate. The code asked the database 'does this user have at least 1 credit?' and the database said 'no.' Something has to *change* in your User row before this button works again."
 
@@ -381,7 +414,13 @@ wasp db studio
 
 This will open a browser tab at `http://localhost:5555` showing your database tables.
 
+ASK: "Tell me when Prisma Studio is open at http://localhost:5555."
+
 LEARNER: 👉 In Prisma Studio, click the **User** table. Find the row for your test user (look at the `email` column).
+
+STOP: Wait until the learner confirms they found the correct user row before discussing the fields on it.
+
+ASK: "Tell me when you've found your user row in Prisma Studio, or paste what you're unsure about."
 
 Have them notice the relevant fields for their user — most importantly `credits` (which should be `0` after Beat 1's clicking). Also point out `subscriptionStatus` and `subscriptionPlan` (both probably null) — those would also be updated by a real subscription webhook, but for *this* gate, credits is the field that matters.
 
@@ -389,11 +428,19 @@ Now simulate what a "credits purchase" webhook would do:
 
 LEARNER: 👉 Click into the `credits` cell for your test user. Change it from `0` to `10`. Click `Save 1 change` at the top of the screen.
 
+STOP: Wait until the learner confirms the `credits` change to `10` was saved.
+
+ASK: "Tell me when the `credits` change to `10` is saved, or paste any error."
+
 Now have them go back to the running app:
 
 LEARNER: 👉 Switch to your browser tab at `http://localhost:3000`. Go back to the AI demo page (refresh if needed). Click your "Try the AI (Demo Mode)" button.
 
 The button should work again, and the alert should now say "Credits remaining: 9". The gate is open.
+
+STOP: Wait until the learner confirms the gate opened again and the button worked.
+
+ASK: "Tell me what happened after you clicked the button again, or paste what you saw."
 
 When the gate opens, celebrate it explicitly:
 
@@ -403,7 +450,15 @@ Now flip it back, to confirm they understand it cuts both ways:
 
 LEARNER: 👉 Go back to Prisma Studio. Change `credits` back to `0`. Save.
 
+STOP: Wait until the learner confirms the `credits` change back to `0` was saved.
+
+ASK: "Tell me when the `credits` change back to `0` is saved, or paste any error."
+
 LEARNER: 👉 Refresh the AI demo page and click the button. The gate should close again — alert shows "You're out of credits!"
+
+STOP: Wait until the learner confirms the gate closed again and they saw \"You're out of credits!\"
+
+ASK: "Tell me when you saw the gate close again, or paste what happened."
 
 For bonus context (don't dwell — just plant the seed), point at the *other* fields:
 

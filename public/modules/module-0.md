@@ -49,6 +49,19 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/mod
 >   Do not skip or significantly rephrase these.
 > - `ASK:` — YOU (the agent) ask the learner this question and wait for their response
 >   before continuing. Do not answer it for them.
+> - `STOP:` — YOU (the agent) must not continue past this point until the blocking
+>   condition is satisfied. Usually this means waiting for the learner to confirm
+>   completion, paste output, or describe what they see. `STOP:` should usually be
+>   followed by an `ASK:` that creates the checkpoint.
+>
+> **IMPORTANT FOR AI AGENTS**:
+> Commands marked `LEARNER:` must never be executed by the agent, even if the
+> agent has terminal access. Print the command for the learner, then stop and
+> wait for the learner to confirm it finished or paste the output. This is
+> especially important for long-running commands and commands that require an
+> interactive terminal.
+>
+> The agent may only execute commands marked `RUN:`.
 >
 > **Progress tracking**: At the start of the module, check for a `public/course-progress.json`
 > file in the project root. If it exists and references this module, resume from the
@@ -73,7 +86,10 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/mod
 
 ## Prerequisites
 - Learner has run the setup script (`setup.sh`) and all tools should be installed
-- VERIFY: Run `wasp version` and confirm it outputs a version number (e.g., `0.21.x`). Run `node --version` and confirm it shows `v22` or higher. If either fails, direct them to re-run the setup script.
+- VERIFY with short, safe agent checks:
+  - RUN: `wasp version`
+  - RUN: `node --version`
+  - Confirm `wasp version` outputs a version number (e.g., `0.21.x`) and `node --version` shows `v22` or higher. If either fails, direct the learner to re-run the setup script.
 
 ## Learning Objectives
 By the end of this module, the learner will:
@@ -119,22 +135,27 @@ Print progress bar.
 
 SAY: "The next few steps — setting up the database and starting the app — can take a few minutes the first time since it needs to download and install dependencies. I'll keep you posted as we go."
 
-RUN: `wasp db migrate-dev --name init`
-- IMPORTANT: The `--name` flag MUST BE provided so the command doesn't hang waiting for interactive input!
+STOP: From here until the app is running, the learner owns the terminal commands.
+Do not run these commands in the agent terminal.
 
-SAY: "This command sets up your database — think of it as creating an empty spreadsheet with the right column headers, ready for data."
-
-LEARNER: Run `wasp start` in a new terminal.
-SAY: "Now it's your turn to run a command! Open a **new terminal window or tab**, then run these two commands then tell me when you're ready to continue:"
+LEARNER: In a real terminal — run:
 ```
 cd <full-path-to-their-app>
+wasp db migrate-dev --name init
+```
+
+This command sets up your database — think of it as creating an empty spreadsheet with the right column headers, ready for data. `wasp db migrate-dev` must run in the learner's real terminal because Prisma may reject agent/non-interactive shells. The `--name` flag is required so the command doesn't hang waiting for an interactive migration-name prompt.
+
+ASK: "Tell me when the migration finishes, or paste any error."
+
+LEARNER: In that same terminal — run:
+```
 wasp start
 ```
-Give them the exact `cd` path based on where their project was created so they don't have to guess.
 
-If the learner has trouble (can't find terminal, wrong directory, errors), help them troubleshoot. As a last resort, run `wasp start` for them as a background task.
+Give them the exact `cd` path based on where their project was created so they don't have to guess. If the learner has trouble (can't find terminal, wrong directory, errors), help them troubleshoot, but do not run `wasp start` for them.
 
-PAUSE HERE 
+ASK: "Tell me when the app is running at http://localhost:3000."
 
 SAY: "Your app is now running in that terminal window. **Keep it open** — don't close it! You'll want to check back there periodically because the app will sometimes print useful information there (like email verification links). Think of it as your app's logbook."
 - Suggest they arrange their windows: "Try putting your terminal and browser side by side — that way you'll see changes update in real time as we work."
@@ -148,6 +169,10 @@ Write `public/course-progress.json` with:
 LEARNER: Sign up in the browser.
 SAY: "This app has a real login system! Use any email and password — it's running locally so this is just for you. The email doesn't need to be real. Go sign up now, and then come back here — I'll have a mock email verification link waiting for you in that terminal window where `wasp start` is running. You'll need to click it to verify your account. Let me know once you're logged in."
 
+STOP: The learner must sign up, find the dummy email verification link in the `wasp start` terminal, open it, and land on the tasks page themselves. Do not continue until they confirm they are logged in and can see the tasks page.
+
+ASK: "Tell me when you're logged in and can see the tasks page, or paste any error."
+
 PAUSE HERE
 
 After signup/login, they land on the tasks page with their username displayed.
@@ -156,6 +181,8 @@ Write `public/course-progress.json` with:
 ```json
 { "module": 0, "beat": 1, "title": "Create & Launch Your App", "status": "in-progress", "guideStep": 2, "interactiveStep": null }
 ```
+
+STOP: Do not seed module tasks or talk about the tasks page until the learner confirms they are on the tasks page and can interact with it.
 
 **Seed the app with module tasks**: After the learner has signed up and can see the tasks page, create tasks in the app that mirror the module's beats. This gives them a built-in checklist and something to interact with right away:
 - ~~Create & Launch Your App~~ (mark as completed)
@@ -171,7 +198,7 @@ Write `public/course-progress.json` with:
 
 ASK: "You just created a full web app — it has a login system, a database, and a task manager, all running on your computer. How does that feel? Go ahead and play with it — try checking off tasks, adding new ones, or adding tags."
 
-PAUSE HERE
+STOP: The learner owns the browser here. Do not move to Beat 2 until they say they are ready to continue.
 
 Give them time to explore. Answer questions about what they see. If they notice the tags feature, show enthusiasm — that's a bonus feature baked into the starter template.
 
@@ -214,7 +241,7 @@ This triggers the interactive data flow modal in the learner's browser — they'
 
 SAY: "So go ahead and add a new task and watch how data flows through the app in the interactive diagram. Let me know if you have any questions. When you're ready to continue, just say so."
 
-PAUSE HERE
+STOP: Wait for the learner to use the interactive diagram and say they are ready before giving the mental-model summary.
 
 SAY: "Here's the mental model to take away for every interaction in your app;
   1. something happens in the browser (frontend), 
@@ -225,8 +252,6 @@ SAY: "Here's the mental model to take away for every interaction in your app;
 
 ASK: "So when you save a task in your app, how does it get stored so that it persists after you log out and back in? Why don't you see other user's tasks and only yours?"
 
-PAUSE HERE
-
 Write `public/course-progress.json` with:
 ```json
 { "module": 0, "beat": 2, "title": "What's Under the Hood", "status": "in-progress", "guideStep": 5, "interactiveStep": "update-task" }
@@ -234,7 +259,7 @@ Write `public/course-progress.json` with:
 
 SAY: "Now let's explore what happens when we check a task as completed. Does the server need to update the database? If so, what information get's sent to the database? Use the interactive diagram to help you answer these questions."
 
-PAUSE HERE
+STOP: Wait for the learner to use the second interactive diagram step and respond before continuing.
 
 After answering questions, briefly connect the layers to the project files — but do NOT open or print any file contents:
 
@@ -271,6 +296,9 @@ Print progress bar.
 ASK: "Right now the header says 'Todo App'. If this were YOUR app, what would you call it? Pick any name you want."
 
 LEARNER: Choose a name. Whatever they pick, this is the moment to model good AI collaboration.
+
+STOP: Wait for the learner's actual chosen app name. Do not pick one for them or move on without it.
+
 SAY: "Great name! Now here's the fun part — you're going to tell me what to change, and I'll do it. Try saying something like: 'Change the app title across all instances of the app to [their name]'"
 
 Wait for them to prompt you (even if it's awkward or imprecise — that's fine, this is practice). Then make the change:
@@ -283,6 +311,8 @@ Write `public/course-progress.json` with:
 ```json
 { "module": 0, "beat": 3, "title": "Make It Yours", "status": "in-progress", "guideStep": 7, "interactiveStep": null }
 ```
+
+STOP: Wait until the learner has seen the first change in the browser and reacted to it before asking for a second customization.
 
 ASK: "Nice! What else would you want to change? Maybe a color, the layout, add something to the page? Describe what you want in your own words — don't worry about using technical terms."
 

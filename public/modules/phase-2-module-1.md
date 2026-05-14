@@ -64,6 +64,19 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 >   Do not skip or significantly rephrase these.
 > - `ASK:` — YOU (the agent) ask the learner this question and wait for their response
 >   before continuing. Do not answer it for them.
+> - `STOP:` — YOU (the agent) must not continue past this point until the blocking
+>   condition is satisfied. Usually this means waiting for the learner to confirm
+>   completion, paste output, or describe what they see. `STOP:` should usually be
+>   followed by an `ASK:` that creates the checkpoint.
+>
+> **IMPORTANT FOR AI AGENTS**:
+> Commands marked `LEARNER:` must never be executed by the agent, even if the
+> agent has terminal access. Print the command for the learner, then stop and
+> wait for the learner to confirm it finished or paste the output. This is
+> especially important for long-running commands and commands that require an
+> interactive terminal.
+>
+> The agent may only execute commands marked `RUN:`.
 >
 > **Showing code**: The learner may not have a code editor open — they might only have
 > a terminal and a browser. Never tell them to "open a file" or "look at line 42."
@@ -98,7 +111,12 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 - Learner has completed setup (`/modules/setup.md`) — same setup script as Phase 1.
 - **Docker is required for Phase 2** (Open SaaS uses Postgres via Docker). The setup script lists Docker as optional; for Phase 2 it is mandatory. If Docker is not installed and running, pause and install it before continuing.
 - Learner is in an empty working directory where they want their SaaS project to live.
-- VERIFY: Run `wasp version` (must output a version), `node --version` (must be v22+), and `docker --version` (must be installed). Then run `docker info` to confirm the Docker daemon is actually running. If `docker info` fails with "Cannot connect to the Docker daemon," the daemon isn't running — tell the learner to start it. On macOS/Windows that usually means opening Docker Desktop (or Colima/OrbStack/Rancher Desktop if they prefer those). On Linux the daemon should already be running as a systemd service; if not, they may need `sudo systemctl start docker`.
+- VERIFY with short, safe agent checks:
+  - RUN: `wasp version`
+  - RUN: `node --version`
+  - RUN: `docker --version`
+  - RUN: `docker info`
+  - Confirm `wasp version` outputs a version, `node --version` is v22+, `docker --version` is installed, and `docker info` shows the Docker daemon is running. If `docker info` fails with "Cannot connect to the Docker daemon," the daemon isn't running — tell the learner to start it. On macOS/Windows that usually means opening Docker Desktop (or Colima/OrbStack/Rancher Desktop if they prefer those). On Linux the daemon should already be running as a systemd service; if not, they may need `sudo systemctl start docker`.
 
 ## Learning Objectives
 By the end of this module, the learner will:
@@ -141,7 +159,16 @@ Now scaffold the project. Open SaaS uses `wasp new` (no template flag — Wasp p
 RUN (try this first): `wasp new my-saas -t saas`
 
 If that fails or your shell doesn't support the `-t` flag in this Wasp version, fall back to:
-RUN: `wasp new my-saas` and respond to the prompt by selecting `[3] saas` from the template list.
+
+STOP: Do not drive the interactive Wasp prompt from the agent terminal.
+
+LEARNER: In a real terminal, from the empty working directory where they want the SaaS project to live, run:
+```
+wasp new my-saas
+```
+When Wasp prompts for a template, select `[3] saas`.
+
+ASK: "Tell me when scaffolding finishes, or paste any error."
 
 After scaffolding, the project structure looks like this:
 
@@ -164,26 +191,32 @@ RUN: `cp .env.server.example .env.server`
 
 (Note: Open SaaS does not require a separate `.env.client` for the bare-minimum boot. If you discover one is needed for a specific feature later, we'll handle it in the relevant module.)
 
-Now we need **two long-running terminals** owned by the learner — one for the database, one for the app. The agent's terminal can keep being used for short commands, but the two below need to stay open and dedicated.
+STOP: From here until the app is running, the learner owns the terminal commands.
+Do not run these commands in the agent terminal.
+Each learner terminal must be in the `my-saas/app` directory before running the command; give the learner the exact `cd` path if needed.
 
-LEARNER: 👉 **Terminal A — database**: open a new terminal, `cd` into `my-saas/app`, then run:
+LEARNER: Terminal A — run:
 ```
 wasp start db
 ```
 
-Wait until you see output indicating Postgres is ready and listening (typically on port 5432). Leave Terminal A alone for the rest of the module — do not close it, do not Ctrl-C it.
+ASK: "Tell me when Terminal A says Postgres is ready/listening."
 
-LEARNER: 👉 **Terminal B — app**: open a *second* terminal, `cd` into the same `my-saas/app` directory, then run:
+LEARNER: Terminal B — run:
 ```
 wasp db migrate-dev --name init
 ```
 
-This creates the initial database schema. We use `--name init` so the migration name is passed directly — interactive prompts for migration names hang in most AI coding agents. This may take a minute the first time (it installs all dependencies). Wait for it to complete with a "migration applied" message.
+This creates the initial database schema. `wasp db migrate-dev` must run in the learner's real terminal because Prisma may reject agent/non-interactive shells. This may take a minute the first time because it installs dependencies.
 
-LEARNER: 👉 In Terminal B, run:
+ASK: "Tell me when the migration finishes, or paste any error."
+
+LEARNER: In Terminal B — run:
 ```
 wasp start
 ```
+
+ASK: "Tell me when the app is running at http://localhost:3000."
 
 Once the app is up at `http://localhost:3000`, suggest they arrange their browser and Terminal B side by side so they can see both. Terminal A (running `wasp start db`) can stay minimized — just don't close it.
 
@@ -232,9 +265,25 @@ They will need to find the verification link in the terminal. Explain to them: "
 
 LEARNER: 👉 Find the `Dummy email sender ✉️` block in the `wasp start` terminal, copy the verification link, and open it in your browser.
 
+STOP: The learner must find and open the verification link themselves. Do not continue until they confirm they are logged in and on the dashboard.
+
+ASK: "Tell me when you're logged in and on the dashboard, or paste any error."
+
 After they sign up and land on the app dashboard, tell them: "And *this* is what users see after they log in — the actual product. The marketing site sold them on it; this is what they signed up for."
 
-LEARNER: 👉 Click around the dashboard. Visit the AI demo page if there is one — but **don't click Generate yet**. It would error out without an OpenAI API key, and we'll wire that up properly in Module 2. For now, just observe that the page is there. Then click **Pricing** in the nav.
+STOP: Walk this tour one action at a time. Do not describe the next surface until the learner confirms they are there.
+
+LEARNER: 👉 Click around the dashboard.
+
+ASK: "Tell me when you've looked around the dashboard."
+
+LEARNER: 👉 Visit the AI demo page if there is one — but **don't click Generate yet**. It would error out without an OpenAI API key, and we'll wire that up properly in Module 2. For now, just observe that the page is there.
+
+ASK: "Tell me when you've seen the AI demo page, or if you don't see one."
+
+LEARNER: 👉 Click **Pricing** in the nav.
+
+ASK: "Tell me when you're on the pricing page."
 
 On the pricing page, point out: "These are subscription tiers. Open SaaS supports three payment providers out of the box — **Stripe**, **Lemon Squeezy**, and **Polar** — and you pick one when you set up your app. Click 'Buy' on a tier so we can talk about what *would* happen."
 
@@ -315,6 +364,10 @@ app/src/
 
 SAY: "See how the folders are named after *what they do*, not *what kind of code they are*? Most of these folders exist because of an external service we just talked about. That's the glue, right there in the file tree."
 
+STOP: Do not continue until the user confirms they understand the concept above. Answer any questions first before confirming understanding.
+
+ASK: Does this concept of a SaaS app make sense? 
+
 Now make the glue tangible. Print this snippet to show them what an `.env.server` file looks like (do NOT have them open the file — just print a sanitized example):
 
 ```env
@@ -331,11 +384,13 @@ GOOGLE_CLIENT_ID=...
 
 SAY: "This file is the *list of services your app is plugged into*. Every line is a key that lets your app talk to one external service. When you hear someone say 'modern dev is just gluing APIs together' — *this* is what they mean."
 
-There's one more file worth naming, even though we won't open it today: `main.wasp` (in the `app/` directory). Tell the learner: "That file is the *control panel* of your SaaS — it's where you declare your auth methods, your routes, your database models, your background jobs, and your webhook endpoints. Wasp reads it and wires everything up. We'll start touching it in Module 2 — for now, just know it exists and that it's the master config."
+SAY: There's one more file worth naming, even though we won't open it today: `main.wasp` (in the `app/` directory). Tell the learner: "That file is the *control panel* of your SaaS — it's where you declare your auth methods, your routes, your database models, your background jobs, and your webhook endpoints. Wasp reads it and wires everything up. We'll start touching it in Module 2 — for now, just know it exists and that it's the master config."
 
-Now show them the admin side. The admin dashboard at `/admin` is gated by an `isAdmin` boolean on the user — by default, the account they just signed up with isn't an admin yet, so visiting `/admin` will bounce them. We'll flip that flag now so they can see what's behind the gate.
+STOP: Do not continue until the user confirms they are ready.
 
-SAY: "Open SaaS keeps the admin area locked behind an `isAdmin` flag on your user record. There are two ways to flip it: set `ADMIN_EMAILS` in `.env.server` *before* you sign up (any email in that list becomes admin on first login), or — since you've already signed up — open Wasp's database GUI and toggle the field by hand. We'll do the second one."
+ASK: Great. Now we're going to actually modify some properties in our database. Ready to continue?
+
+SAY: In your app, there is also a secret entrance for administrators. It's not a seperate app or anything, just a dashboard that's only meant for the owners of the app. The admin dashboard at `/admin` is gated by an `isAdmin` boolean on the user — by default, the account they just signed up with isn't an admin yet, so visiting `/admin` won't work for you. We'll flip that flag now so they can see what's behind the gate.
 
 LEARNER: 👉 Open a **new terminal** (leave `wasp start db` and `wasp start` running in the others), `cd` into the `app/` directory, and run:
 
@@ -345,9 +400,19 @@ wasp db studio
 
 This launches Prisma Studio in the browser — a spreadsheet-like view of your database tables.
 
+ASK: "Tell me when Prisma Studio is open at http://localhost:5555."
+
 LEARNER: 👉 In Prisma Studio, click the **User** model in the left sidebar, find the row for the email you signed up with, change `isAdmin` from `false` to `true`, and click **Save 1 change** at the top.
 
+STOP: Wait until the learner confirms the `isAdmin` change was saved.
+
+ASK: "Tell me when the `isAdmin` change is saved, or paste any error."
+
 LEARNER: 👉 Back in the app at `http://localhost:3000`, refresh the page (or log out and back in) and navigate to `http://localhost:3000/admin`.
+
+STOP: Wait until the learner confirms they can see the admin dashboard, or paste the redirect/error they see.
+
+ASK: "Tell me when you can see the admin dashboard, or paste what happened."
 
 Now they should see the admin dashboard. Describe what lives there: user list, subscription status, daily/weekly analytics. Tell them: "This is the *back of the house*. You as the operator look at this. Customers don't see it. The fact that you just changed a single boolean in the database to unlock this whole area is a hint at how role-based access usually works in a SaaS — there's no separate admin app, it's the same app rendering different things based on who's logged in."
 
