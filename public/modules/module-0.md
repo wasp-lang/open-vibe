@@ -200,8 +200,6 @@ ASK: "You just created a full web app — it has a login system, a database, and
 
 STOP: The learner owns the browser here. Do not move to Beat 2 until they say they are ready to continue.
 
-PAUSE HERE
-
 Give them time to explore. Answer questions about what they see. If they notice the tags feature, show enthusiasm — that's a bonus feature baked into the starter template.
 
 ## → TRANSITION (free-form)
@@ -245,8 +243,6 @@ SAY: "So go ahead and add a new task and watch how data flows through the app in
 
 STOP: Wait for the learner to use the interactive diagram and say they are ready before giving the mental-model summary.
 
-PAUSE HERE
-
 SAY: "Here's the mental model to take away for every interaction in your app;
   1. something happens in the browser (frontend), 
   2. it goes to the server (backend), 
@@ -256,8 +252,6 @@ SAY: "Here's the mental model to take away for every interaction in your app;
 
 ASK: "So when you save a task in your app, how does it get stored so that it persists after you log out and back in? Why don't you see other user's tasks and only yours?"
 
-PAUSE HERE
-
 Write `public/course-progress.json` with:
 ```json
 { "module": 0, "beat": 2, "title": "What's Under the Hood", "status": "in-progress", "guideStep": 5, "interactiveStep": "update-task" }
@@ -266,8 +260,6 @@ Write `public/course-progress.json` with:
 SAY: "Now let's explore what happens when we check a task as completed. Does the server need to update the database? If so, what information get's sent to the database? Use the interactive diagram to help you answer these questions."
 
 STOP: Wait for the learner to use the second interactive diagram step and respond before continuing.
-
-PAUSE HERE
 
 After answering questions, briefly connect the layers to the project files — but do NOT open or print any file contents:
 
