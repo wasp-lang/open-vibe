@@ -54,6 +54,19 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/mod
 >   Do not skip or significantly rephrase these.
 > - `ASK:` — YOU (the agent) ask the learner this question and wait for their response
 >   before continuing. Do not answer it for them.
+> - `STOP:` — YOU (the agent) must not continue past this point until the blocking
+>   condition is satisfied. Usually this means waiting for the learner to confirm
+>   completion, paste output, or describe what they see. `STOP:` should usually be
+>   followed by an `ASK:` that creates the checkpoint.
+>
+> **IMPORTANT FOR AI AGENTS**:
+> Commands marked `LEARNER:` must never be executed by the agent, even if the
+> agent has terminal access. Print the command for the learner, then stop and
+> wait for the learner to confirm it finished or paste the output. This is
+> especially important for long-running commands and commands that require an
+> interactive terminal.
+>
+> The agent may only execute commands marked `RUN:`.
 >
 > **Troubleshooting & human help**: If a command fails and your first troubleshooting
 > attempt does not resolve it, OR if the learner types "I NEED HUMAN HELP"
@@ -226,6 +239,19 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/mod
 > - `LEARNER:` — The learner performs this action.
 > - `SAY:` — YOU (the agent) tell the learner this message verbatim or near-verbatim.
 > - `ASK:` — YOU (the agent) ask this question and wait for a response.
+> - `STOP:` — YOU (the agent) must not continue past this point until the blocking
+>   condition is satisfied. Usually this means waiting for the learner to confirm
+>   completion, paste output, or describe what they see. `STOP:` should usually be
+>   followed by an `ASK:` that creates the checkpoint.
+>
+> **IMPORTANT FOR AI AGENTS**:
+> Commands marked `LEARNER:` must never be executed by the agent, even if the
+> agent has terminal access. Print the command for the learner, then stop and
+> wait for the learner to confirm it finished or paste the output. This is
+> especially important for long-running commands and commands that require an
+> interactive terminal.
+>
+> The agent may only execute commands marked `RUN:`.
 >
 > **Troubleshooting & human help**: If a command fails and your first troubleshooting
 > attempt does not resolve it, OR if the learner types "I NEED HUMAN HELP"
@@ -318,8 +344,9 @@ ASK: "If you could add one more piece of information to each task, what would it
 
 Let them choose. Whatever they pick, guide them through adding it:
 1. Add the field to the Task model in `schema.prisma`
-2. RUN: `wasp db migrate-dev --name <descriptive-name>` (always use `--name` to pass the migration name directly — the interactive prompt hangs in most AI coding agents)
-3. SAY: "What just happened: the migration updated your database to match your new schema. Think of it like updating the spreadsheet template — all existing rows now have a new column, and any new rows will include it too."
+2. LEARNER: In the real terminal running the app, stop the app if needed, then run `wasp db migrate-dev --name <descriptive-name>`. Always use `--name` to pass the migration name directly. `wasp db migrate-dev` must run in the learner's real terminal because Prisma may reject agent/non-interactive shells.
+3. ASK: "Tell me when the migration finishes, or paste any error."
+4. SAY: "What just happened: the migration updated your database to match your new schema. Think of it like updating the spreadsheet template — all existing rows now have a new column, and any new rows will include it too."
 
 If the migration fails, diagnose the error, explain what went wrong in plain language, and fix it together.
 Show them the change is reflected: query the tasks and point out the new field.

@@ -58,7 +58,10 @@ Each module is a standalone markdown file that Claude fetches and follows.
 
 ## Authoring Notes
 
-- **Always use `wasp db migrate-dev --name <descriptive-name>`** (not bare `wasp db migrate-dev`). The interactive migration-name prompt hangs in most AI coding agents since they can't handle interactive input. The `--name` flag passes the name directly.
+- **Command ownership is strict**: `RUN:` is only for short, safe, non-interactive commands the agent should execute. `LEARNER:` commands must never be executed by the agent, even if the agent has terminal access. Print the command for the learner, then stop and wait with `ASK:` until they confirm it finished or paste the output.
+- **`STOP:` is a formal control prefix**: Define it in every module meta block. `STOP:` means the agent must not continue past that point until the blocking condition is satisfied. It should usually be followed by an `ASK:` that creates the checkpoint.
+- **Learner-owned long-running/interactive commands**: Commands such as `wasp start db`, `wasp start`, `wasp db studio`, and anything that requires a durable or interactive terminal belong under `LEARNER:` with an immediate `ASK:` stop-and-wait prompt.
+- **Database migrations are learner-owned**: Always use `wasp db migrate-dev --name <descriptive-name>` (not bare `wasp db migrate-dev`), but mark it `LEARNER:` and have the learner run it in their real terminal. Prisma may reject agent/non-interactive shells, and the bare interactive migration-name prompt hangs in most AI coding agents. The `--name` flag passes the name directly.
 - **Progress tracking**: Every module's Meta block must include the `**Progress tracking**` instruction. The agent writes `public/course-progress.json` (`{ "module": N, "beat": N, "title": "...", "status": "in-progress" | "complete" }`) and prints a `[■■□□]` progress bar. Progress is updated at the *start* of each new beat (not the end of the previous one) via a `MUST DO` directive — this avoids inconsistencies if the session drops mid-beat.
 - **"Continue" command**: Every module's Meta block must include the `**"Continue"**` instruction, which tells the agent to advance to the next step/beat when the learner types "continue".
 - **Side-by-side windows**: When `wasp start` runs for the first time, suggest the learner arrange their terminal and browser side by side.

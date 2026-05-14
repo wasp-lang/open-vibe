@@ -49,6 +49,10 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/mod
 >   Do not skip or significantly rephrase these.
 > - `ASK:` — YOU (the agent) ask the learner this question and wait for their response
 >   before continuing. Do not answer it for them.
+> - `STOP:` — YOU (the agent) must not continue past this point until the blocking
+>   condition is satisfied. Usually this means waiting for the learner to confirm
+>   completion, paste output, or describe what they see. `STOP:` should usually be
+>   followed by an `ASK:` that creates the checkpoint.
 >
 > **IMPORTANT FOR AI AGENTS**:
 > Commands marked `LEARNER:` must never be executed by the agent, even if the
@@ -165,6 +169,10 @@ Write `public/course-progress.json` with:
 LEARNER: Sign up in the browser.
 SAY: "This app has a real login system! Use any email and password — it's running locally so this is just for you. The email doesn't need to be real. Go sign up now, and then come back here — I'll have a mock email verification link waiting for you in that terminal window where `wasp start` is running. You'll need to click it to verify your account. Let me know once you're logged in."
 
+STOP: The learner must sign up, find the dummy email verification link in the `wasp start` terminal, open it, and land on the tasks page themselves. Do not continue until they confirm they are logged in and can see the tasks page.
+
+ASK: "Tell me when you're logged in and can see the tasks page, or paste any error."
+
 PAUSE HERE
 
 After signup/login, they land on the tasks page with their username displayed.
@@ -173,6 +181,8 @@ Write `public/course-progress.json` with:
 ```json
 { "module": 0, "beat": 1, "title": "Create & Launch Your App", "status": "in-progress", "guideStep": 2, "interactiveStep": null }
 ```
+
+STOP: Do not seed module tasks or talk about the tasks page until the learner confirms they are on the tasks page and can interact with it.
 
 **Seed the app with module tasks**: After the learner has signed up and can see the tasks page, create tasks in the app that mirror the module's beats. This gives them a built-in checklist and something to interact with right away:
 - ~~Create & Launch Your App~~ (mark as completed)
@@ -187,6 +197,8 @@ Write `public/course-progress.json` with:
 ```
 
 ASK: "You just created a full web app — it has a login system, a database, and a task manager, all running on your computer. How does that feel? Go ahead and play with it — try checking off tasks, adding new ones, or adding tags."
+
+STOP: The learner owns the browser here. Do not move to Beat 2 until they say they are ready to continue.
 
 PAUSE HERE
 
@@ -231,6 +243,8 @@ This triggers the interactive data flow modal in the learner's browser — they'
 
 SAY: "So go ahead and add a new task and watch how data flows through the app in the interactive diagram. Let me know if you have any questions. When you're ready to continue, just say so."
 
+STOP: Wait for the learner to use the interactive diagram and say they are ready before giving the mental-model summary.
+
 PAUSE HERE
 
 SAY: "Here's the mental model to take away for every interaction in your app;
@@ -250,6 +264,8 @@ Write `public/course-progress.json` with:
 ```
 
 SAY: "Now let's explore what happens when we check a task as completed. Does the server need to update the database? If so, what information get's sent to the database? Use the interactive diagram to help you answer these questions."
+
+STOP: Wait for the learner to use the second interactive diagram step and respond before continuing.
 
 PAUSE HERE
 
@@ -288,6 +304,9 @@ Print progress bar.
 ASK: "Right now the header says 'Todo App'. If this were YOUR app, what would you call it? Pick any name you want."
 
 LEARNER: Choose a name. Whatever they pick, this is the moment to model good AI collaboration.
+
+STOP: Wait for the learner's actual chosen app name. Do not pick one for them or move on without it.
+
 SAY: "Great name! Now here's the fun part — you're going to tell me what to change, and I'll do it. Try saying something like: 'Change the app title across all instances of the app to [their name]'"
 
 Wait for them to prompt you (even if it's awkward or imprecise — that's fine, this is practice). Then make the change:
@@ -300,6 +319,8 @@ Write `public/course-progress.json` with:
 ```json
 { "module": 0, "beat": 3, "title": "Make It Yours", "status": "in-progress", "guideStep": 7, "interactiveStep": null }
 ```
+
+STOP: Wait until the learner has seen the first change in the browser and reacted to it before asking for a second customization.
 
 ASK: "Nice! What else would you want to change? Maybe a color, the layout, add something to the page? Describe what you want in your own words — don't worry about using technical terms."
 

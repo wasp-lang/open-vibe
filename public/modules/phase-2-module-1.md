@@ -64,6 +64,10 @@ If you are an AI agent, stop and run `curl -fsSL https://openvibe.sh/modules/pha
 >   Do not skip or significantly rephrase these.
 > - `ASK:` — YOU (the agent) ask the learner this question and wait for their response
 >   before continuing. Do not answer it for them.
+> - `STOP:` — YOU (the agent) must not continue past this point until the blocking
+>   condition is satisfied. Usually this means waiting for the learner to confirm
+>   completion, paste output, or describe what they see. `STOP:` should usually be
+>   followed by an `ASK:` that creates the checkpoint.
 >
 > **IMPORTANT FOR AI AGENTS**:
 > Commands marked `LEARNER:` must never be executed by the agent, even if the
@@ -155,7 +159,16 @@ Now scaffold the project. Open SaaS uses `wasp new` (no template flag — Wasp p
 RUN (try this first): `wasp new my-saas -t saas`
 
 If that fails or your shell doesn't support the `-t` flag in this Wasp version, fall back to:
-RUN: `wasp new my-saas` and respond to the prompt by selecting `[3] saas` from the template list.
+
+STOP: Do not drive the interactive Wasp prompt from the agent terminal.
+
+LEARNER: In a real terminal, from the empty working directory where they want the SaaS project to live, run:
+```
+wasp new my-saas
+```
+When Wasp prompts for a template, select `[3] saas`.
+
+ASK: "Tell me when scaffolding finishes, or paste any error."
 
 After scaffolding, the project structure looks like this:
 
@@ -252,9 +265,25 @@ They will need to find the verification link in the terminal. Explain to them: "
 
 LEARNER: 👉 Find the `Dummy email sender ✉️` block in the `wasp start` terminal, copy the verification link, and open it in your browser.
 
+STOP: The learner must find and open the verification link themselves. Do not continue until they confirm they are logged in and on the dashboard.
+
+ASK: "Tell me when you're logged in and on the dashboard, or paste any error."
+
 After they sign up and land on the app dashboard, tell them: "And *this* is what users see after they log in — the actual product. The marketing site sold them on it; this is what they signed up for."
 
-LEARNER: 👉 Click around the dashboard. Visit the AI demo page if there is one — but **don't click Generate yet**. It would error out without an OpenAI API key, and we'll wire that up properly in Module 2. For now, just observe that the page is there. Then click **Pricing** in the nav.
+STOP: Walk this tour one action at a time. Do not describe the next surface until the learner confirms they are there.
+
+LEARNER: 👉 Click around the dashboard.
+
+ASK: "Tell me when you've looked around the dashboard."
+
+LEARNER: 👉 Visit the AI demo page if there is one — but **don't click Generate yet**. It would error out without an OpenAI API key, and we'll wire that up properly in Module 2. For now, just observe that the page is there.
+
+ASK: "Tell me when you've seen the AI demo page, or if you don't see one."
+
+LEARNER: 👉 Click **Pricing** in the nav.
+
+ASK: "Tell me when you're on the pricing page."
 
 On the pricing page, point out: "These are subscription tiers. Open SaaS supports three payment providers out of the box — **Stripe**, **Lemon Squeezy**, and **Polar** — and you pick one when you set up your app. Click 'Buy' on a tier so we can talk about what *would* happen."
 
@@ -369,7 +398,15 @@ ASK: "Tell me when Prisma Studio is open at http://localhost:5555."
 
 LEARNER: 👉 In Prisma Studio, click the **User** model in the left sidebar, find the row for the email you signed up with, change `isAdmin` from `false` to `true`, and click **Save 1 change** at the top.
 
+STOP: Wait until the learner confirms the `isAdmin` change was saved.
+
+ASK: "Tell me when the `isAdmin` change is saved, or paste any error."
+
 LEARNER: 👉 Back in the app at `http://localhost:3000`, refresh the page (or log out and back in) and navigate to `http://localhost:3000/admin`.
+
+STOP: Wait until the learner confirms they can see the admin dashboard, or paste the redirect/error they see.
+
+ASK: "Tell me when you can see the admin dashboard, or paste what happened."
 
 Now they should see the admin dashboard. Describe what lives there: user list, subscription status, daily/weekly analytics. Tell them: "This is the *back of the house*. You as the operator look at this. Customers don't see it. The fact that you just changed a single boolean in the database to unlock this whole area is a hint at how role-based access usually works in a SaaS — there's no separate admin app, it's the same app rendering different things based on who's logged in."
 
