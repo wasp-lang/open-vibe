@@ -191,6 +191,12 @@ RUN: `cp .env.server.example .env.server`
 
 (Note: Open SaaS does not require a separate `.env.client` for the bare-minimum boot. If you discover one is needed for a specific feature later, we'll handle it in the relevant module.)
 
+This template's config lives in TypeScript `*.wasp.ts` files that import from `@wasp.sh/spec`. Wasp generates that package locally, so install it once now — from inside `my-saas/app`, before the first compile:
+
+RUN: `wasp install`
+
+(`wasp install` generates the `@wasp.sh/spec` package the `*.wasp.ts` config imports from. It must run before the first `wasp start db` / `wasp db migrate-dev` / `wasp start`.)
+
 STOP: From here until the app is running, the learner owns the terminal commands.
 Do not run these commands in the agent terminal.
 Each learner terminal must be in the `my-saas/app` directory before running the command; give the learner the exact `cd` path if needed.

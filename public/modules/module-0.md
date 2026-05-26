@@ -303,7 +303,7 @@ SAY: "Great name! Now here's the fun part — you're going to tell me what to ch
 
 Wait for them to prompt you (even if it's awkward or imprecise — that's fine, this is practice). Then make the change:
 - Update the `<h1>` text in `src/shared/components/Header.tsx` (change "Todo App" to their chosen name)
-- Update the `title` field in `main.wasp.ts` to match
+- Update the `title` field in `main.wasp` to match
 
 SAY: "Look at your browser — it already updated! You didn't have to restart anything. Every time we save a change, Wasp automatically rebuilds and refreshes."
 
@@ -357,7 +357,7 @@ How to handle their response:
 Summarize what they learned:
 - A web app has three main parts: a **frontend** (what you see in the browser), a **backend** (the server that handles logic and data), and a **database** (where information is stored)
 - Every interaction follows the same loop: browser → server → database → back to the screen
-- Their project has three key files that map to these layers: `main.wasp.ts` (the blueprint), `schema.prisma` (the data shape), and `src/` (the code)
+- Their project has three key files that map to these layers: `main.wasp` (the blueprint), `schema.prisma` (the data shape), and `src/` (the code)
 - You can describe changes in plain language and build them with AI — that's the core workflow for the rest of this course
 
 Write `public/course-progress.json` with:
