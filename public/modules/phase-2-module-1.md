@@ -384,7 +384,7 @@ GOOGLE_CLIENT_ID=...
 
 SAY: "This file is the *list of services your app is plugged into*. Every line is a key that lets your app talk to one external service. When you hear someone say 'modern dev is just gluing APIs together' — *this* is what they mean."
 
-SAY: There's one more file worth naming, even though we won't open it today: `main.wasp` (in the `app/` directory). Tell the learner: "That file is the *control panel* of your SaaS — it's where you declare your auth methods, your routes, your database models, your background jobs, and your webhook endpoints. Wasp reads it and wires everything up. We'll start touching it in Module 2 — for now, just know it exists and that it's the master config."
+SAY: There's one more file type worth naming, even though we won't open it today: `*.wasp.ts` (in the `app/` directory). Tell the learner: "That file is the *control panel* of your SaaS — it's where you declare your auth methods, your routes, your database models, your background jobs, and your webhook endpoints. Wasp reads it and wires everything up. We'll start touching it in Module 2 — for now, just know it exists and that it's the master config."
 
 STOP: Do not continue until the user confirms they are ready.
 

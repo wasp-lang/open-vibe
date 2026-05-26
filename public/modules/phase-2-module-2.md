@@ -202,9 +202,9 @@ export const consumeFakeCredit = async (_args: void, context: any) => {
 };
 ```
 
-(If the file already imports `HttpError`, don't duplicate the import. If the existing operations use a typed signature like `type ConsumeFakeCredit = ConsumeFakeCredit<...>` from `wasp/server/operations`, prefer that pattern after declaring the action in `main.wasp` so the type generator can produce it. For Module 2 the loose `context: any` shown above is acceptable as a learning shortcut — flag it to the learner as such.)
+(If the file already imports `HttpError`, don't duplicate the import. If the existing operations use a typed signature like `type ConsumeFakeCredit = ConsumeFakeCredit<...>` from `wasp/server/operations`, prefer that pattern after declaring the action in `*.wasp.ts` so the type generator can produce it. For Module 2 the loose `context: any` shown above is acceptable as a learning shortcut — flag it to the learner as such.)
 
-**Step 2 — Declare the action in `main.wasp`.**
+**Step 2 — Declare the action in `*.wasp.ts`.**
 
 Find the `action` declarations near the existing demo-ai-app actions (look for `generateGptResponse` or similar). Add:
 
@@ -327,20 +327,19 @@ Use an analogy:
 
 SAY: "Think of Stripe like a notary. The user goes to the notary's office to sign a contract. You're not in the room. The notary stamps the contract, then *calls you* to say 'yes, this was real, this person paid.' Without that phone call, you'd never know. The webhook is that phone call."
 
-Now make the webhook tangible. Open SaaS declares its webhook endpoint in `app/main.wasp`. Don't have the learner open the file — just print the relevant declaration:
+Now make the webhook tangible. Open SaaS declares its webhook endpoint in the payment's `*.wasp.ts` file. Don't have the learner open the file — just print the relevant declaration.
 
 ```ts
-api paymentsWebhook {
-  fn: import { paymentsWebhook } from "@src/payment/webhook",
-  httpRoute: (POST, "/payments-webhook"),
-  entities: [User],
-}
+api("POST", "/payments-webhook", paymentsWebhook, {
+  entities: ["User"],
+  middlewareConfigFn: paymentsMiddlewareConfigFn,
+}),
 ```
 
 Annotate it:
 - `api paymentsWebhook` — names this an externally-callable endpoint (not a regular query/action)
 - `httpRoute: (POST, "/payments-webhook")` — Stripe (or whichever processor is configured) will POST to `https://yourapp.com/payments-webhook`
-- `entities: [User]` — declares that this handler can read/write the User table
+- `entities: ["User"]` — declares that this handler can read/write the User table
 - The implementation is exposed at `@src/payment/webhook` — under the hood, Open SaaS routes through a `paymentProcessor` abstraction (`src/payment/paymentProcessor.ts`) that picks the active provider, and the actual handler lives at `src/payment/<provider>/webhook.ts` (e.g. `src/payment/stripe/webhook.ts`). We'll see this layout properly when we wire up real payments in Module 3.
 
 SAY: "When you eventually go to production, you'll go to the Stripe dashboard and tell Stripe: 'send your webhook events to https://my-saas.com/payments-webhook.' From then on, every successful payment fires that endpoint, and the code in `webhook.ts` updates the right user. *That's* how 'paid users get access' actually works in your app."
@@ -537,7 +536,7 @@ Print final progress bar: `[■■■■] Module 2 complete — The Auth → Pay
 ## Checkpoint
 Expected state after this module:
 - Open SaaS app still running locally (DB in terminal A, app in terminal B, optionally Prisma Studio in terminal C)
-- A new Wasp action `consumeFakeCredit` exists in the demo-ai-app operations, declared in `main.wasp` with `entities: [User]`
+- A new Wasp action `consumeFakeCredit` exists in the demo-ai-app operations, declared in `*.wasp.ts` with `entities: [User]`
 - A new "Try the AI (Demo Mode)" button exists on the demo AI page, calling that action
 - Test user's `credits` field has been flipped between `0` and `10` at least once via Prisma Studio, and the gate visibly opened and closed in response
 - No real Stripe / Lemon Squeezy / Polar / OpenAI keys configured yet — that's Module 3
