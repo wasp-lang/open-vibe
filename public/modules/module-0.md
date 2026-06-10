@@ -125,6 +125,15 @@ If `git clone` fails because git is not installed, help the learner install it:
 
 Then retry the clone.
 
+SAY: "This app's settings live in TypeScript files (the `*.wasp.ts` files). Wasp builds a little helper package for them on your machine, so let's set that up now — it only takes a moment."
+
+RUN:
+```bash
+wasp install
+```
+
+(`wasp install` generates the local `@wasp.sh/spec` package that the `*.wasp.ts` config files import from. It has to run once before the first `wasp db migrate-dev` / `wasp start`. If Wasp later tells the learner to run it again — for example after `wasp clean` — just rerun it.)
+
 SAY: "Now, I'm going to create some files to keep track of where you are in the module. That way, if we get interrupted, we can pick up right where we left off."
 
 Write `public/course-progress.json` with:

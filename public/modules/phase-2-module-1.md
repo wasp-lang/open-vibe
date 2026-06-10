@@ -191,6 +191,12 @@ RUN: `cp .env.server.example .env.server`
 
 (Note: Open SaaS does not require a separate `.env.client` for the bare-minimum boot. If you discover one is needed for a specific feature later, we'll handle it in the relevant module.)
 
+This template's config lives in TypeScript `*.wasp.ts` files that import from `@wasp.sh/spec`. Wasp generates that package locally, so install it once now — from inside `my-saas/app`, before the first compile:
+
+RUN: `wasp install`
+
+(`wasp install` generates the `@wasp.sh/spec` package the `*.wasp.ts` config imports from. It must run before the first `wasp start db` / `wasp db migrate-dev` / `wasp start`. If Wasp ever asks you to run it again later — say after `wasp clean` or a version bump — just rerun it.)
+
 STOP: From here until the app is running, the learner owns the terminal commands.
 Do not run these commands in the agent terminal.
 Each learner terminal must be in the `my-saas/app` directory before running the command; give the learner the exact `cd` path if needed.
@@ -384,7 +390,7 @@ GOOGLE_CLIENT_ID=...
 
 SAY: "This file is the *list of services your app is plugged into*. Every line is a key that lets your app talk to one external service. When you hear someone say 'modern dev is just gluing APIs together' — *this* is what they mean."
 
-SAY: There's one more file worth naming, even though we won't open it today: `main.wasp.ts` (in the `app/` directory). Tell the learner: "That file is the *control panel* of your SaaS — it's where you declare your auth methods, your routes, your database models, your background jobs, and your webhook endpoints. It's written in TypeScript: you build the config by listing your app's pages, routes, queries, actions, and APIs, and Wasp reads it and wires everything up. We'll start touching it in Module 2 — for now, just know it exists and that it's the master config."
+SAY: There's one more file type worth naming, even though we won't open it today: the `*.wasp.ts` files (in the `app/` directory, starting with `main.wasp.ts`). Tell the learner: "These files are the *control panel* of your SaaS — it's where you declare your auth methods, your routes, your database models, your background jobs, and your webhook endpoints. They're written in TypeScript: you build the config by listing your app's pages, routes, queries, actions, and APIs, and Wasp reads it and wires everything up. Bigger apps split this across feature files (like `demo-ai-app.wasp.ts` or `payment.wasp.ts`) next to the code they configure. We'll start touching them in Module 2 — for now, just know they exist and that they're the master config."
 
 STOP: Do not continue until the user confirms they are ready.
 

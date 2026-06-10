@@ -79,7 +79,7 @@ Each module is a standalone markdown file that Claude fetches and follows.
 - *Prompting focus*: How to give the agent context, how to describe what you want
 
 ### Module 1: Data & The Database
-- **Explore**: The actual project files — walk through `main.wasp.ts`, `schema.prisma`, and `src/` to see how the three layers map to real code. Then dive into the data model — how tasks are stored
+- **Explore**: The actual project files — walk through the `*.wasp.ts` config (`main.wasp.ts` plus feature files like `src/tasks/tasks.wasp.ts`), `schema.prisma`, and `src/` to see how the three layers map to real code. Then dive into the data model — how tasks are stored
 - **Modify**: Add a field to tasks (priority, due date)
 - **Extend**: Build a feature using the new field (filter/sort)
 - *Concepts*: Reading code with AI help, what a database schema is, CRUD, data flow from DB → server → client
